@@ -1,0 +1,42 @@
+Psudocode for Currency-Arbitrage
+
+(each x amount of time) x will depend on the max times we can call the APIs (we need to reserve some API calls for the order books)
+first we need to upload the data with an API
+    for each crypto exchange
+
+we need to sort the data based on market cap and only look at USDT pairs
+    marketcap: <10,000,000 && > y
+
+we will put this data into dictionaries the key being exchange (ex. Binance) and the value being the crypto price BTC/USDT (14,234)
+    we will have a separate dictionary for each crypto
+    [there are some challenges here we need to work out]
+
+we need to decide if a liner search is good enough for speed, or we are gonna need something faster on the base of O(logN), like a tree
+
+we will compare the prices inside each dictionary and if deviates by Z (ex. 1%), we can call the API again for the order book
+
+we look at the order book for sells and for buys to decide how many coins we will buy, and then sell on the other exchange
+
+we transfer funds from the main wallet to the first exchange
+
+buy the coins
+
+transfer them to the other exchange 
+
+sell the coins
+
+transfer the USDT back to the main wallet
+
+---------------------------------------------------------------------------
+
+*issues: 
+
+-if we cannot afford to keep atleast 3.5kUSDT in each exchange (obviously we cannot), 
+we will pay 3 transfer/withdraw fees for each trade (not counting comissions)
+
+-We need a way to estimate the time it will take to transfer the funds, and maybe not take trades that take ex. 20min
+
+
+
+
+
