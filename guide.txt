@@ -36,6 +36,10 @@ we will pay 3 transfer/withdraw fees for each trade (not counting comissions)
 
 -We need a way to estimate the time it will take to transfer the funds, and maybe not take trades that take ex. 20min
 
+resources:
+
+lib for scanning market 24/7
+https://tutorialedge.net/python/concurrency/asyncio-event-loops-tutorial/
 
 
 
