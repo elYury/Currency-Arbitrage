@@ -1,5 +1,67 @@
 Psudocode for Currency-Arbitrage
 
+        PREPARATION
+
+Find which exchanges are reputable with reasonable fees
+Create exchange accounts & crypto wallets
+Method to sort which cryptos hold most oportunities by market cap/ volatility or else
+APIs for price and order book data
+Listing prices and comparing it across exchanges
+Fee list for transfers, market orders, transactions etc...
+Time needed for every step of the transaction
+Eth gas fee updated and included in fee calculations
+Calculate position size based on order book liquidity
+
+
+        STEP 1
+
+Look at all the crypto pairs worth considering and fetch their market price by exchange in a table
+Compare highest and lowest price from same pair accross exchanges
+Determine minimum % difference to execute Arbitrage
+Calculate ammount of time needed for whole operation and maximum time to accept.
+
+
+        STEP 2
+
+If % is enough : Get order books for buying on the lowest price pair and for selling on the highest price pair
+Determine correct position size based on available liquidity and their respective prices
+Calculate buying position price and value. Calculate selling position price and value.
+Calculate eth gas fees
+Calculate transfer, buying, selling and withdrawal fees.
+Calculate total cost of operating and total gain after fees.
+Determine if gain is enough.
+
+
+        STEP 3
+Print operation's data overview ( sum of all the previously calculated information in a concise manner )
+
+
+        STEP4
+Execute on the whole operation and report final gain and time after completion
+
+
+        STEP 5
+
+Determine if its worth it to redo arbitrage with other exchanges involved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (each x amount of time) x will depend on the max times we can call the APIs (we need to reserve some API calls for the order books)
 first we need to upload the data with an API
     for each crypto exchange
