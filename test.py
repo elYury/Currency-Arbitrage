@@ -1,18 +1,19 @@
-import time
-from func_get_ticker_bybit import get_bybit_ticker
-from func_get_ticker_bybit import get_sym_list
-from func_get_ticker_kucoin import get_kucoin_ticker
 
-key = get_sym_list()
-bybitticker = get_bybit_ticker()
-kucointicker = get_kucoin_ticker()
+#reference
+#https://developer-pro.bitmart.com/en/spot/#get-list-of-trading-pair-details
 
+import requests
+
+r = requests.get('https://api-cloud.bitmart.com/spot/v1/symbols/details')
 
 
 
+info = r.json()
+info = info['data']['symbols']
+sym_list = []
 
-for i in range(len(kucointicker)):
-    x = kucointicker[i].keys()
-    if x.__contains__('USDT') == True:
+for x in range(len(info)):
+    if info[x]['quote_currency'] == 'USDT' and info[x]['trade_status'] == 'trading':
+        sym_list.append(info[x]['symbol'])
 
-        print(x)
+print(sym_list)

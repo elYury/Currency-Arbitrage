@@ -7,7 +7,7 @@
 
 from pybit.unified_trading import HTTP
 
-def get_sym_list():
+def get_bybit_symbols():
     session = HTTP(testnet=False)
     info = session.get_instruments_info(
         category="spot"
@@ -26,7 +26,7 @@ def get_bybit_ticker():
     session = HTTP(testnet=False)
     info = session.get_instruments_info(
     category="spot")
-    sym_list = get_sym_list()
+    sym_list = get_bybit_symbols()
     ticker_list = []
     ticker = session.get_tickers(category="spot")
     ticker = ticker['result']['list']
@@ -37,7 +37,10 @@ def get_bybit_ticker():
                 symbol_ticker = {sym_list[i]: ticker[j]['lastPrice']}
                 ticker_list.append(symbol_ticker)
     
-    return ticker_list
-    
+    sorteddict={}
+    for i in ticker_list:
+        sorteddict.update(i) 
+
+    return sorteddict
 #print(get_bybit_ticker())
 
