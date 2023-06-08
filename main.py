@@ -1,19 +1,29 @@
 import time
 from datetime import datetime
 
-#import symbols
-from func_get_ticker_bybit import get_bybit_symbols
+#import symbols and calc liquidity
+from func_bybit import get_bybit_symbols
+from order_book_calc import orderbook_info
+
 
 #import tickers
-from func_get_ticker_bybit import get_bybit_ticker
-from func_get_ticker_kucoin import get_kucoin_ticker
-from func_get_ticker_gateio import get_gateio_ticker
-from func_get_ticker_hitbtc import get_hitbtc_ticker
-from func_get_ticker_bitmart import get_bitmart_ticker
+from func_bybit import get_bybit_ticker
+from func_kucoin import get_kucoin_ticker
+from func_gateio import get_gateio_ticker
+from func_hitbtc import get_hitbtc_ticker
+from func_bitmart import get_bitmart_ticker
+
+import json
+
+#import all the symbols from json file
+from sym_list import sym_list
+key = sym_list
+#with open('sym_list.json') as json_file:
+    #key = json.load(json_file)
 
 #initialize values
-    #TODO: key function needs to be changed once we have enough exchanges
-key = get_bybit_symbols()
+#minimum % difference for arbitrage
+minimum_gain = 20
 
 #counting success (s) and failiure of abri opportunities
 count = 0
@@ -62,12 +72,19 @@ for x in range(len(key)):
             # calc %
             if ex1 > ex2:
                 x = ex1/ex2 * 100 - 100
-                if x > 20 and x < 100:
+                if x > minimum_gain:  
+                    orderinfo = orderbook_info(current_key, exchange_list[i], exchange_list[j])
+                    volume = orderinfo['volume']
+                    avgprice = orderinfo['avgprice']
+                    currency_base = current_key.replace("USDT","")
+
                     print(f"Arbitrage found {current_time}")
                     print(f"Gain: {round(x, 2)}% Pair: {current_key}")
-                    print(f"BUY AT: {exchange_list[j]}")
-                    print(f"SELL AT: {exchange_list[i]}")
+                    print(f"BUY at {exchange_list[j]}")
+                    print(f"SELL at {exchange_list[i]}")
+                    print(f"Volume: {volume} {currency_base} || Average price: {avgprice} USDT")
                     print('-' * 25)
+                    print()
 
                     scount += 1
                 else:
@@ -76,4 +93,5 @@ for x in range(len(key)):
         
 print(f"Arbi Opportunities: {scount}")
 print(f"Unsuccesfull Arbies: {count}")
+print('*Indian accent* Listen, Average price might not be accurate, contact uncle Rakesh')
 print('')

@@ -1,19 +1,11 @@
-
-#reference
-#https://developer-pro.bitmart.com/en/spot/#get-list-of-trading-pair-details
-
+# coding: utf-8
 import requests
 
-r = requests.get('https://api-cloud.bitmart.com/spot/v1/symbols/details')
+host = "https://api.gateio.ws"
+prefix = "/api/v4"
+headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
-
-
-info = r.json()
-info = info['data']['symbols']
-sym_list = []
-
-for x in range(len(info)):
-    if info[x]['quote_currency'] == 'USDT' and info[x]['trade_status'] == 'trading':
-        sym_list.append(info[x]['symbol'])
-
-print(sym_list)
+url = '/spot/order_book'
+query_param = 'currency_pair=BTC_USDT'
+r = requests.request('GET', host + prefix + url + "?" + query_param, headers=headers)
+print(r.json())
