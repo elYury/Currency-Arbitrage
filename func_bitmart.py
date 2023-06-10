@@ -27,7 +27,7 @@ def get_bitmart_ticker():
 
     for i in range(len(sym_list)):
         for j in range(len(ticker)):
-            if sym_list[i] == ticker[j]['symbol']:
+            if sym_list[i] == ticker[j]['symbol'] and float(ticker[j]['quote_volume_24h']) >= 10000:
                 symbol = sym_list[i].replace("_", "")
                 symbol_ticker = {symbol: ticker[j]['last_price']}
                 ticker_list.append(symbol_ticker)
@@ -46,10 +46,10 @@ def get_bitmart_orderbook(sym, outputask):
     else:
         price = 'sells'
     sym = sym.replace("USDT", "_USDT")
-    orderbook = requests.get('https://api-cloud.bitmart.com/spot/v1/symbols/book?symbol=' + sym)
+    orderbook = requests.get('https://api-cloud.bitmart.com/spot/v1/symbols/book?symbol=' + sym + '&size=50')
     orderbook = orderbook.json()
     orderbook = orderbook['data'][price]
     
     return orderbook
 
-#print(get_bitmart_orderbook('BTCUSDT', False))
+#print(get_bitmart_orderbook('LUNAUSDT', False))

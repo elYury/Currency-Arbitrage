@@ -31,6 +31,7 @@ def get_buy_cap(symbol, exchange_sell):
 
     return buycap
 
+
 def get_sell_cap(symbol, exchange_buy):
     if exchange_buy == 'Bybit':
         sellcap = get_bybit_orderbook(symbol, True)
@@ -114,7 +115,7 @@ def get_max_volume_asks(symbol, exchange_buy, exchange_sell):
                 break     
 
     avgprice = float(pricevolsum / volume)
-    tmpdict = {'avgprice': avgprice, 'volume': volume}
+    tmpdict = {'avgprice': avgprice, 'volume': volume, 'dicttype': 'ask'}
     return tmpdict
 
 
@@ -178,13 +179,14 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
                 break
 
     avgprice = float(pricevolsum / volume)
-    tmpdict = {'avgprice': avgprice, 'volume': volume}
+    tmpdict = {'avgprice': avgprice, 'volume': volume, 'dicttype': 'bid'}
     return tmpdict
+
 
 def call_order_book(symbol, exchange_buy, exchange_sell):
     dictask = get_max_volume_asks(symbol, exchange_buy, exchange_sell)
     dictbid = get_max_volume_bids(symbol, exchange_buy, exchange_sell)
-    tmpdict = {'infoask': dictask, 'infobid': dictask}
+    tmpdict = {'infoask': dictask, 'infobid': dictbid}
     return tmpdict
 
 
@@ -197,4 +199,5 @@ def orderbook_info(symbol, exchange_buy, exchange_sell):
 
 
 #print(get_max_volume_bids())
-#print(get_max_volume_asks())
+#print(call_order_book('TIMEUSDT', 'Kucoin', 'Gate.io'))
+#print(orderbook_info('TIMEUSDT', 'Kucoin', 'Gate.io'))

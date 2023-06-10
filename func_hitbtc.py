@@ -23,7 +23,7 @@ def get_hitbtc_ticker():
 
     for i in range(len(sym_list)):
         for key in ticker:
-            if sym_list[i] == key:
+            if sym_list[i] == key and float(ticker[key]["volume_quote"]) >= 10000 :
                 symbol = sym_list[i]
                 symbol_ticker = {symbol: ticker[key]['last']}
                 ticker_list.append(symbol_ticker)
@@ -42,7 +42,7 @@ def get_hitbtc_orderbook(sym, outputask):
     else:
         price = 'ask'
     
-    orderbook = requests.get('https://api.hitbtc.com/api/3/public/orderbook')
+    orderbook = requests.get('https://api.hitbtc.com/api/3/public/orderbook?depth=50')
     orderbook = orderbook.json()
     orderbook = orderbook[sym][price]
     

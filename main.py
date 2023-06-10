@@ -1,5 +1,7 @@
 import time
+import pyttsx3
 from datetime import datetime
+from termcolor import colored
 
 #import symbols and calc liquidity
 from func_bybit import get_bybit_symbols
@@ -17,13 +19,16 @@ import json
 
 #import all the symbols from json file
 from sym_list import sym_list
+from sym_list import ban_list
 key = sym_list
 #with open('sym_list.json') as json_file:
     #key = json.load(json_file)
 
 #initialize values
 #minimum % difference for arbitrage
-minimum_gain = 20
+minimum_difference = 20
+#estimate for all fees in USDT
+estimatefees = 5
 
 #counting success (s) and failiure of abri opportunities
 count = 0
@@ -49,11 +54,24 @@ megalist.append(get_bitmart_ticker())
 exchange_list.append("Bitmart")
 
 print('')
+print('loading...')
+print('')
 
 #time
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
 
+#delete data in the text file
+open('Arbitrage.txt', 'w').close()
+open('difference.txt', 'w').close()
+
+#open file
+difffile = open('difference.txt', 'w')
+
+arbifile = open('Arbitrage.txt', 'w')
+arbifile.write("Arbitrage Opportunities:\n")
+arbifile.write('-' * 50 + '\n')
+arbifile.write('\n')
 
 # calculation looping over each key on each exchange
 for x in range(len(key)):
@@ -72,26 +90,67 @@ for x in range(len(key)):
             # calc %
             if ex1 > ex2:
                 x = ex1/ex2 * 100 - 100
-                if x > minimum_gain:  
-                    orderinfo = orderbook_info(current_key, exchange_list[i], exchange_list[j])
+                if x > minimum_difference: 
+                    if current_key in ban_list:
+                        continue 
+
+                    difffile.write(f"Difference in {current_key} of {x}% B: {exchange_list[j]}, S:{exchange_list[i]}\n")
+
+                    orderinfo = orderbook_info(current_key, exchange_list[j], exchange_list[i])
                     volume = orderinfo['volume']
                     avgprice = orderinfo['avgprice']
                     currency_base = current_key.replace("USDT","")
+                    ask_or_bid_fullyfilled = orderinfo['dicttype']
+                    totalprice = avgprice * volume
 
-                    print(f"Arbitrage found {current_time}")
-                    print(f"Gain: {round(x, 2)}% Pair: {current_key}")
-                    print(f"BUY at {exchange_list[j]}")
-                    print(f"SELL at {exchange_list[i]}")
-                    print(f"Volume: {volume} {currency_base} || Average price: {avgprice} USDT")
-                    print('-' * 25)
-                    print()
+                    #print(f"symbol{current_key}, B: {exchange_list[j]}, S:{exchange_list[i]}")
 
-                    scount += 1
+                    if ask_or_bid_fullyfilled == 'ask':
+                        estimategain = round(ex1 * volume - totalprice, 2)
+
+                    if ask_or_bid_fullyfilled == 'bid':
+                        estimategain = round(totalprice - ex2 * volume, 2) 
+                    
+                    if estimategain > 5 + estimatefees:
+                        ('$\n')
+                        pyttsx3.speak(f"ARBITRAGE FOUND!")
+                        arbifile.write(f"ARBITRAGE FOUND at {current_time}\n")
+                        arbifile.write("")
+                        arbifile.write(f"Gain: {round(x, 2)}%    Pair: {current_key}\n")
+                        arbifile.write(f"BUY: {volume} {currency_base} on {exchange_list[j]}, SELL on {exchange_list[i]}\n")
+                        arbifile.write('\n')
+
+                        if ask_or_bid_fullyfilled == 'ask':
+                            arbifile.write(f'BUY {totalprice} USDT of {currency_base} at {exchange_list[j]} || Average price: {avgprice} USDT\n')
+                            arbifile.write(f'SELL at {exchange_list[i]} || Market sell price: {ex1} USDT\n')
+                            arbifile.write(f'Estimated gain: ' + str(estimategain))
+                            arbifile.write(' USDT\n')
+                            arbifile.write(f'Fill all orders until we CAP on the exchange we BUY at {exchange_list[i]}\n')
+
+                        if ask_or_bid_fullyfilled == 'bid':
+
+                            arbifile.write(f'BUY at {exchange_list[j]} || Market buy price: {ex2} USDT\n')
+                            arbifile.write(f'SELL {totalprice} USDT of {currency_base} at {exchange_list[i]} || Average price: {avgprice} USDT\n')
+                            arbifile.write(f'Estimated gain: ' + str(estimategain))
+                            arbifile.write(' USDT\n')
+                            arbifile.write(f'Fill all orders until we CAP on the exchange we SELL at {exchange_list[j]}\n')
+
+                        arbifile.write('-' * 50 + '\n')
+
+                        scount += 1
+                    else:
+                        count += 1
                 else:
                     count += 1
 
         
-print(f"Arbi Opportunities: {scount}")
-print(f"Unsuccesfull Arbies: {count}")
-print('*Indian accent* Listen, Average price might not be accurate, contact uncle Rakesh')
-print('')
+arbifile.write(f"Arbi Opportunities: {scount} \n")
+arbifile.write(f"Unsuccesfull Arbies: {count} \n")
+arbifile.write('\n')
+arbifile.write('*NOTE: Market price not accurate measure of profit gain\n')
+arbifile.write('\n')
+print(colored('completed', 'green'))
+
+arbifile.close()
+difffile.close()
+

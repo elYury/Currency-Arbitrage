@@ -1,4 +1,4 @@
-#API Bybit
+#API Bybit https://bybit-exchange.github.io/docs/v5/intro
 #APIkey = "rVMWSWoabYl8OVisI0"
 #APIsecret = "rAmkTaGjUYiHY9bPSlkLjSzoKq2iIUXpsUl8"
 
@@ -31,7 +31,7 @@ def get_bybit_ticker():
 
     for i in range(len(sym_list)):
         for j in range(len(ticker)):
-            if sym_list[i] == ticker[j]['symbol']:
+            if sym_list[i] == ticker[j]['symbol'] and float(ticker[j]['turnover24h']) >= 10000:
                 symbol_ticker = {sym_list[i]: ticker[j]['lastPrice']}
                 ticker_list.append(symbol_ticker)
     

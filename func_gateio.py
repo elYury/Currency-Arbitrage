@@ -19,7 +19,7 @@ def get_gateio_symbols():
     sym_list = []
 
     for x in range(len(info)):
-        if info[x]['quote'] == 'USDT' and info[x]['trade_status'] == 'tradable':
+        if info[x]['quote'] == 'USDT' and info[x]['trade_status'] == 'tradable': 
             sym_list.append(info[x]['id'])
 
     return sym_list
@@ -32,7 +32,7 @@ def get_gateio_ticker():
 
     for i in range(len(sym_list)):
         for j in range(len(ticker)):
-            if sym_list[i] == ticker[j]['currency_pair']:
+            if sym_list[i] == ticker[j]['currency_pair']: #there is no volume on this request #and float(info[x]['quote_volume']) >= 10000:
                 symbol = sym_list[i].replace("_", "")
                 symbol_ticker = {symbol: ticker[j]['last']}
                 ticker_list.append(symbol_ticker)
@@ -50,7 +50,7 @@ def get_gateio_orderbook(sym, outputask):
         price = 'asks'
 
     sym = sym.replace("USDT", "_USDT")
-    orderbook = requests.get('https://api.gateio.ws/api/v4/spot/order_book?currency_pair=' + sym)
+    orderbook = requests.get('https://api.gateio.ws/api/v4/spot/order_book?currency_pair=' + sym + '&limit=50')
     orderbook = orderbook.json()
     orderbook = orderbook[price]
     

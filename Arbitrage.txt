@@ -1,0 +1,44 @@
+Arbitrage Opportunities:
+--------------------------------------------------
+
+ARBITRAGE FOUND at 17:09:00
+Gain: 66.56%    Pair: LTOUSDT
+BUY: 93672.79459999998 LTO on Hitbtc, SELL on Kucoin
+
+BUY at Hitbtc || Market buy price: 0.034673 USDT
+SELL 5321.769861438997 USDT of LTO at Kucoin || Average price: 0.05681233152233721 USDT
+Estimated gain: 2073.85 USDT
+Fill all orders until we CAP on the exchange we SELL at Hitbtc
+--------------------------------------------------
+ARBITRAGE FOUND at 17:09:00
+Gain: 66.89%    Pair: LTOUSDT
+BUY: 59785.8854 LTO on Hitbtc, SELL on Gate.io
+
+BUY at Hitbtc || Market buy price: 0.034673 USDT
+SELL 3403.4728173251997 USDT of LTO at Gate.io || Average price: 0.05692769780951006 USDT
+Estimated gain: 1330.52 USDT
+Fill all orders until we CAP on the exchange we SELL at Hitbtc
+--------------------------------------------------
+ARBITRAGE FOUND at 17:09:00
+Gain: 22.06%    Pair: TENETUSDT
+BUY: 9961.23 TENET on Kucoin, SELL on Bybit
+
+BUY at Kucoin || Market buy price: 0.11731 USDT
+SELL 1345.4450643999999 USDT of TENET at Bybit || Average price: 0.1350681657184906 USDT
+Estimated gain: 176.89 USDT
+Fill all orders until we CAP on the exchange we SELL at Kucoin
+--------------------------------------------------
+ARBITRAGE FOUND at 17:09:00
+Gain: 21.07%    Pair: TENETUSDT
+BUY: 8419.843099999998 TENET on Gate.io, SELL on Bybit
+
+BUY 1047.652496549 USDT of TENET at Gate.io || Average price: 0.12442660559185482 USDT
+SELL at Bybit || Market sell price: 0.14319 USDT
+Estimated gain: 157.98 USDT
+Fill all orders until we CAP on the exchange we BUY at Bybit
+--------------------------------------------------
+Arbi Opportunities: 4 
+Unsuccesfull Arbies: 1877 
+
+*NOTE: Market price not accurate measure of profit gain
+

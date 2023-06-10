@@ -1,3 +1,5 @@
+#https://docs.kucoin.com/#hftrading
+
 import requests
 from kucoin.client import Market
 
@@ -12,7 +14,7 @@ def get_kucoin_symbols():
 
     for x in range(len(info)):
         if info[x]['quoteCurrency'] == 'USDT' and info[x]['enableTrading'] == True:
-            sym_list.append(info[x]['symbol'])
+            sym_list.append(info[x]['name'])
 
     return sym_list
 
@@ -27,7 +29,7 @@ def get_kucoin_ticker():
 
     for i in range(len(sym_list)):
         for j in range(len(ticker)):
-            if sym_list[i] == ticker[j]['symbol']:
+            if sym_list[i] == ticker[j]['symbol'] and float(ticker[j]["volValue"]) >= 10000:
                 symbol = sym_list[i].replace("-", "")
                 symbol_ticker = {symbol: ticker[j]['last']}
                 ticker_list.append(symbol_ticker)
@@ -52,4 +54,4 @@ def get_kucoin_orderbook(sym, outputask):
     return orderbook
 
 
-#print(get_kucoin_orderbook('BTCUSDT', True))
+#print(get_kucoin_orderbook('BTCUSDT', False))
