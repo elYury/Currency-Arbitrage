@@ -1,8 +1,0 @@
-Difference in ADPUSDT of 20.04365223717714% B: Gate.io, S:Bitmart
-Difference in LTOUSDT of 66.556109941453% B: Hitbtc, S:Kucoin
-Difference in LTOUSDT of 66.89066420557782% B: Hitbtc, S:Gate.io
-Difference in PLCUUSDT of 371.64149639719676% B: Gate.io, S:Bitmart
-Difference in SKLUSDT of 40.9411764705882% B: Bitmart, S:Kucoin
-Difference in SKLUSDT of 41.0% B: Bitmart, S:Gate.io
-Difference in TENETUSDT of 22.06120535333733% B: Kucoin, S:Bybit
-Difference in TENETUSDT of 21.06633748752897% B: Gate.io, S:Bybit
