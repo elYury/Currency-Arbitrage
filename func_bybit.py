@@ -50,7 +50,7 @@ def get_bybit_orderbook(sym, outputask):
     orderbook = session.get_orderbook(
         category="spot",
         symbol=sym,
-        limit = 50
+        limit = 100
         )
     orderbook = orderbook['result'][price]
     return orderbook

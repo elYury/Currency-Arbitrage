@@ -42,7 +42,7 @@ def get_hitbtc_orderbook(sym, outputask):
     else:
         price = 'ask'
     
-    orderbook = requests.get('https://api.hitbtc.com/api/3/public/orderbook?depth=50')
+    orderbook = requests.get('https://api.hitbtc.com/api/3/public/orderbook?depth=100')
     orderbook = orderbook.json()
     orderbook = orderbook[sym][price]
     

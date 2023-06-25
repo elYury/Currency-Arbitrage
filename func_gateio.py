@@ -50,7 +50,7 @@ def get_gateio_orderbook(sym, outputask):
         price = 'asks'
 
     sym = sym.replace("USDT", "_USDT")
-    orderbook = requests.get('https://api.gateio.ws/api/v4/spot/order_book?currency_pair=' + sym + '&limit=50')
+    orderbook = requests.get('https://api.gateio.ws/api/v4/spot/order_book?currency_pair=' + sym + '&limit=100')
     orderbook = orderbook.json()
     orderbook = orderbook[price]
     
