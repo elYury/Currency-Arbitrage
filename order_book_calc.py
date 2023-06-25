@@ -164,10 +164,11 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         sellcap = get_sell_cap(symbol, exchange_buy)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i]['amount'])
-            pricevolsum += float(orderbook[i]['price']) * float(orderbook[i]['amount'])
             if orderbook[i]['price'] <= sellcap:
                 break
+            volume += float(orderbook[i]['amount'])
+            pricevolsum += float(orderbook[i]['price']) * float(orderbook[i]['amount'])
+
 
     elif exchange_sell == 'Gate.io':
         orderbook = get_gateio_orderbook(symbol, False)
@@ -175,10 +176,11 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         sellcap = get_sell_cap(symbol, exchange_buy)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
             if orderbook[i][0] <= sellcap:
                 break
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
 
     elif exchange_sell == 'Hitbtc':
         orderbook = get_hitbtc_orderbook(symbol, False)
@@ -186,10 +188,11 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         sellcap = get_sell_cap(symbol, exchange_buy)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
             if orderbook[i][0] <= sellcap:
                 break
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
 
     elif exchange_sell == 'Kucoin':
         orderbook = get_kucoin_orderbook(symbol, False)
@@ -197,10 +200,11 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         sellcap = get_sell_cap(symbol, exchange_buy)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
             if orderbook[i][0] <= sellcap:
                 break
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
 
     # average price for either bid or ask
     avgprice = float(pricevolsum / volume)
@@ -210,15 +214,11 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
     return tmpdict
 
 
-def call_order_book(symbol, exchange_buy, exchange_sell):
+def orderbook_info(symbol, exchange_buy, exchange_sell):
     dictask = get_max_volume_asks(symbol, exchange_buy, exchange_sell)
     dictbid = get_max_volume_bids(symbol, exchange_buy, exchange_sell)
-    tmpdict = {'infoask': dictask, 'infobid': dictbid}
-    return tmpdict
+    infodict = {'infoask': dictask, 'infobid': dictbid}
 
-
-def orderbook_info(symbol, exchange_buy, exchange_sell):
-    infodict = call_order_book(symbol, exchange_buy, exchange_sell)
     if infodict['infoask']['volume'] > infodict['infobid']['volume']:
         return infodict['infobid']
     else:
