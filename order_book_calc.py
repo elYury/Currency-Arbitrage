@@ -9,6 +9,8 @@ from func_kucoin import get_kucoin_orderbook
 #bybit = get_bybit_orderbook(symbol, is the price we are looking for ask?)
 
 def get_buy_cap(symbol, exchange_sell):
+    # is ask? = Flase (We are looking at the first value of the bid at the selling exchange, which translates to the buy cap at the buy exchange)
+
     if exchange_sell == 'Bybit':
         buycap = get_bybit_orderbook(symbol, False)
         buycap = buycap[0][0]
@@ -33,6 +35,8 @@ def get_buy_cap(symbol, exchange_sell):
 
 
 def get_sell_cap(symbol, exchange_buy):
+    # is ask? = True (We are looking at the first value of the ask at the buy exchange, which translates to the sell cap at the sell exchange)
+
     if exchange_buy == 'Bybit':
         sellcap = get_bybit_orderbook(symbol, True)
         sellcap = sellcap[0][0]
@@ -59,27 +63,36 @@ def get_sell_cap(symbol, exchange_buy):
 def get_max_volume_asks(symbol, exchange_buy, exchange_sell):
     #asks
     #request asks from orderbook at the exchange we are trying to buy crypto
+
     if exchange_buy == 'Bybit':
+        # get order book for exchange (looking at asks therefore isask = True)
         orderbook = get_bybit_orderbook(symbol, True)
+        # Initialize return value
         volume = 0
         pricevolsum = 0
+        # Get buy cap from function
         buycap = get_buy_cap(symbol, exchange_sell)
+        # Loop to go through ask orderbook starting at the best price
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+            # When price is greater than or equal to the buycap we exit the loop
             if orderbook[i][0] >= buycap:
                 break
-            
+            # summing up our return values
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
+    # Repeat for different exchanges (dictionaries are different from exchange to exchange ... it is difficult to make the code shorter)
     elif exchange_buy == 'Bitmart':
         orderbook = get_bitmart_orderbook(symbol, True)
         volume = 0
         pricevolsum = 0
         buycap = get_buy_cap(symbol, exchange_sell)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i]['amount'])
-            pricevolsum += float(orderbook[i]['price']) * float(orderbook[i]['amount'])
             if orderbook[i]['price'] >= buycap:
                 break
+            volume += float(orderbook[i]['amount'])
+            pricevolsum += float(orderbook[i]['price']) * float(orderbook[i]['amount'])
+
 
     elif exchange_buy == 'Gate.io':
         orderbook = get_gateio_orderbook(symbol, True)
@@ -87,10 +100,11 @@ def get_max_volume_asks(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         buycap = get_buy_cap(symbol, exchange_sell)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
             if orderbook[i][0] >= buycap:
                 break
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
 
     elif exchange_buy == 'Hitbtc':
         orderbook = get_hitbtc_orderbook(symbol, True)
@@ -98,10 +112,11 @@ def get_max_volume_asks(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         buycap = get_buy_cap(symbol, exchange_sell)
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
             if orderbook[i][0] >= buycap:
                 break 
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+
 
     elif exchange_buy == 'Kucoin':
         orderbook = get_kucoin_orderbook(symbol, True)
@@ -109,12 +124,15 @@ def get_max_volume_asks(symbol, exchange_buy, exchange_sell):
         pricevolsum = 0
         buycap = get_buy_cap(symbol, exchange_sell)
         for i in range(len(orderbook)):
+            if orderbook[i][0] >= buycap:
+                break  
             volume += float(orderbook[i][1])
             pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
-            if orderbook[i][0] >= buycap:
-                break     
-
+   
+    # average price for either bid or ask
     avgprice = float(pricevolsum / volume)
+
+    # Retrun dictionary with values
     tmpdict = {'avgprice': avgprice, 'volume': volume, 'dicttype': 'ask'}
     return tmpdict
 
@@ -124,16 +142,22 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
     #request bids from orderbook at the exchange we are trying to sell crypto
 
     if exchange_sell == 'Bybit':
+        # Get orderbook
         orderbook = get_bybit_orderbook(symbol, False)
+        # Initialize return value
         volume = 0
         pricevolsum = 0
+        # Get sell cap from function
         sellcap = get_sell_cap(symbol, exchange_buy)
+        # Loop to go through the bid orderbook starting at the best price
         for i in range(len(orderbook)):
-            volume += float(orderbook[i][1])
-            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
+            # When price is greater than or equal to the sellcap we exit the loop
             if orderbook[i][0] <= sellcap:
                 break
+            volume += float(orderbook[i][1])
+            pricevolsum += float(orderbook[i][0]) * float(orderbook[i][1])
 
+    # Repeat for different exchanges (dictionaries are different from exchange to exchange ... it is difficult to make the code shorter)
     elif exchange_sell == 'Bitmart':
         orderbook = get_bitmart_orderbook(symbol, False)
         volume = 0
@@ -178,7 +202,10 @@ def get_max_volume_bids(symbol, exchange_buy, exchange_sell):
             if orderbook[i][0] <= sellcap:
                 break
 
+    # average price for either bid or ask
     avgprice = float(pricevolsum / volume)
+
+    # Retrun dictionary with values
     tmpdict = {'avgprice': avgprice, 'volume': volume, 'dicttype': 'bid'}
     return tmpdict
 

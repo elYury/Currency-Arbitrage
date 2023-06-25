@@ -1,14 +1,15 @@
-import time
+#lib for text to speech
 import pyttsx3
-#import pywhatkit
 
+#time and colored terminal text
 from datetime import datetime
 from termcolor import colored
 
-#import symbols and calc liquidity
-from func_bybit import get_bybit_symbols
-from order_book_calc import orderbook_info
+#another time lib used for sleep
+import time
 
+#import calc order book
+from order_book_calc import orderbook_info
 
 #import tickers
 from func_bybit import get_bybit_ticker
@@ -17,35 +18,27 @@ from func_gateio import get_gateio_ticker
 from func_hitbtc import get_hitbtc_ticker
 from func_bitmart import get_bitmart_ticker
 
+# send to discord
 from func_discord import send_discord
-import json
 
-#import all the symbols from json file
+#import all the symbols from symobol list file
 from sym_list import sym_list
 from sym_list import ban_list
-key = sym_list
-#with open('sym_list.json') as json_file:
-    #key = json.load(json_file)
 
+
+#----------------------------------------------------------------------------------
 #initialize values
+key = sym_list
+
 #minimum % difference for arbitrage
 minimum_difference = 2.5
-#estimate for all fees in USDT
-estimatefees = 5
-#isstart
-isstart = True
+
+#estimate for all fees in USDT (used to filter unprofitable opportunities)
+estimatefees = 20
+
 #------------------------------------------------------------------------------------------
 
 while True:
-    #run code every 60seconds unless its the first time we are running it
-    if isstart == False:
-        time.sleep(30)
-
-    #time
-    currentDateAndTime = datetime.now()
-    currenthour = currentDateAndTime.strftime("%H")
-    currentminute = currentDateAndTime.strftime("%M")
-    
     #counting success (s) and failiure of abri opportunities
     count = 0
     scount = 0
@@ -81,35 +74,40 @@ while True:
     open('Arbitrage.txt', 'w').close()
     open('difference.txt', 'w').close()
 
-    #open file
+    #open files and write header
     difffile = open('difference.txt', 'w')
-
     arbifile = open('Arbitrage.txt', 'w')
     arbifile.write("Arbitrage Opportunities:\n")
-    arbifile.write('-' * 50 + '\n')
+    arbifile.write('-' * 50 + '\n') 
     arbifile.write('\n')
 
     # calculation looping over each key on each exchange
     for x in range(len(key)):
         current_key = key[x]
+
+        # Loop through the first exchange in the megalist
         for i in range(len(megalist)):
+
+            # Loop through the second exchange in the megalist
             for j in range(len(megalist)):
+
                 #if same exchange is getting compared agaisnt itself then skip
                 if i == j:
                     continue
+
                 #try to look at the price, but if one cant be sourced then skip
                 try:
                     ex1 = float(megalist[i][current_key])
                     ex2 = float(megalist[j][current_key])
                 except:
                     continue
+
                 # calc %
                 if ex1 > ex2:
                     x = ex1/ex2 * 100 - 100
                     if x > minimum_difference: 
                         if current_key in ban_list:
                             continue
-                            #pass
 
                         difffile.write(f"Difference in {current_key} of {x}% B: {exchange_list[j]}, S:{exchange_list[i]}\n")
                         
@@ -123,11 +121,12 @@ while True:
                         #do all juicy calculations
                         volume = orderinfo['volume']
                         avgprice = orderinfo['avgprice']
-                        currency_base = current_key.replace("USDT","")
                         ask_or_bid_fullyfilled = orderinfo['dicttype']
                         totalprice = avgprice * volume
 
-                        #print(f"symbol{current_key}, B: {exchange_list[j]}, S:{exchange_list[i]}")
+                        # ex. get BTC from BTCUSDT
+                        currency_base = current_key.replace("USDT","")
+
 
                         if ask_or_bid_fullyfilled == 'ask':
                             estimategain = round(ex1 * volume - totalprice, 2)
@@ -135,7 +134,7 @@ while True:
                         if ask_or_bid_fullyfilled == 'bid':
                             estimategain = round(totalprice - ex2 * volume, 2) 
                         
-                        if estimategain > 5 + estimatefees:
+                        if estimategain > estimatefees:
                             ('$\n')
                             pyttsx3.speak(f"ARBITRAGE FOUND!")
                             arbifile.write(f"ARBITRAGE FOUND at {current_time}\n")
@@ -194,5 +193,6 @@ while True:
 
     arbifile.close()
     difffile.close()
-    isstart = False
+
+    time.sleep(30)
 

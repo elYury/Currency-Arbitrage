@@ -1,0 +1,162 @@
+Arbitrage Opportunities:
+--------------------------------------------------
+
+ARBITRAGE FOUND at 10:46:35
+Gain: 14.11%    Pair: ANCUSDT
+BUY: 1070599.6039 ANC on Kucoin, SELL on Gate.io
+
+BUY at Kucoin || Market buy price: 0.01077 USDT
+SELL 12815.208687293998 USDT of ANC at Gate.io Average price: 0.011970122761684686 USDT
+Estimated gain: 1284.85 USDT
+Fill all orders until we CAP on the exchange we SELL at Kucoin
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 15.13%    Pair: ANCUSDT
+BUY: 580019.0599999999 ANC on Kucoin, SELL on Bitmart
+
+BUY at Kucoin || Market buy price: 0.01077 USDT
+SELL 6865.7921369999995 USDT of ANC at Bitmart Average price: 0.011837183655654351 USDT
+Estimated gain: 618.99 USDT
+Fill all orders until we CAP on the exchange we SELL at Kucoin
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 3.26%    Pair: BABYDOGEUSDT
+BUY: 2540212564563.0 BABYDOGE on Gate.io, SELL on Bybit
+
+BUY 3995.0373918816945 USDT of BABYDOGE at Gate.io || Average price: 1.572717751110318e-09 USDT
+SELL at Bybit || Market sell price: 1.601e-09 USDT
+Estimated gain: 71.84 USDT
+Fill all orders until we CAP on the exchange we BUY at Bybit
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 3.65%    Pair: BRISEUSDT
+BUY: 45756073819.385635 BRISE on Kucoin, SELL on Bitmart
+
+BUY 12029.299476698014 USDT of BRISE at Kucoin || Average price: 2.629006047193131e-07 USDT
+SELL at Bitmart || Market sell price: 2.7e-07 USDT
+Estimated gain: 324.84 USDT
+Fill all orders until we CAP on the exchange we BUY at Bitmart
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 5.65%    Pair: BRISEUSDT
+BUY: 14049673942.016453 BRISE on Gate.io, SELL on Bitmart
+
+BUY 3646.5500897642314 USDT of BRISE at Gate.io || Average price: 2.5954695495523133e-07 USDT
+SELL at Bitmart || Market sell price: 2.7e-07 USDT
+Estimated gain: 146.86 USDT
+Fill all orders until we CAP on the exchange we BUY at Bitmart
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 11.46%    Pair: BTGUSDT
+BUY: 364.353 BTG on Hitbtc, SELL on Bybit
+
+BUY at Hitbtc || Market buy price: 12.15 USDT
+SELL 4522.9798474 USDT of BTG at Bybit Average price: 12.413730221515946 USDT
+Estimated gain: 96.09 USDT
+Fill all orders until we CAP on the exchange we SELL at Hitbtc
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 14.56%    Pair: BTGUSDT
+BUY: 288.80428594999995 BTG on Hitbtc, SELL on Gate.io
+
+BUY at Hitbtc || Market buy price: 12.15 USDT
+SELL 3916.6398737950003 USDT of BTG at Gate.io Average price: 13.561571155052317 USDT
+Estimated gain: 407.67 USDT
+Fill all orders until we CAP on the exchange we SELL at Hitbtc
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 474.01%    Pair: BUYUSDT
+BUY: 206069.57189284 BUY on Kucoin, SELL on Gate.io
+
+BUY at Kucoin || Market buy price: 0.003636 USDT
+SELL 4089.5731219942554 USDT of BUY at Gate.io Average price: 0.01984559430307794 USDT
+Estimated gain: 3340.3 USDT
+Fill all orders until we CAP on the exchange we SELL at Kucoin
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 142.4%    Pair: CAREUSDT
+BUY: 358897282.7056002 CARE on Gate.io, SELL on Kucoin
+
+BUY at Gate.io || Market buy price: 2.79e-06 USDT
+SELL 2351.936984504073 USDT of CARE at Kucoin Average price: 6.553231517312275e-06 USDT
+Estimated gain: 1350.61 USDT
+Fill all orders until we CAP on the exchange we SELL at Gate.io
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 5.53%    Pair: IOTAUSDT
+BUY: 31935.41520000001 IOTA on Hitbtc, SELL on Kucoin
+
+BUY at Hitbtc || Market buy price: 0.185347 USDT
+SELL 6062.79342008 USDT of IOTA at Kucoin Average price: 0.18984545471261002 USDT
+Estimated gain: 143.66 USDT
+Fill all orders until we CAP on the exchange we SELL at Hitbtc
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 15.21%    Pair: MIRUSDT
+BUY: 66109.35280000001 MIR on Kucoin, SELL on Gate.io
+
+BUY 1824.1662658270002 USDT of MIR at Kucoin || Average price: 0.027593164787827116 USDT
+SELL at Gate.io || Market sell price: 0.03053 USDT
+Estimated gain: 194.15 USDT
+Fill all orders until we CAP on the exchange we BUY at Gate.io
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 15.47%    Pair: MIRUSDT
+BUY: 65495.00250000001 MIR on Kucoin, SELL on Bitmart
+
+BUY 1807.7483579650002 USDT of MIR at Kucoin || Average price: 0.02760131748930004 USDT
+SELL at Bitmart || Market sell price: 0.0306 USDT
+Estimated gain: 196.4 USDT
+Fill all orders until we CAP on the exchange we BUY at Bitmart
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 122.97%    Pair: PRMXUSDT
+BUY: 434056381.1912996 PRMX on Gate.io, SELL on Kucoin
+
+BUY at Gate.io || Market buy price: 3.7e-06 USDT
+SELL 3408.126434758308 USDT of PRMX at Kucoin Average price: 7.851805853894958e-06 USDT
+Estimated gain: 1802.12 USDT
+Fill all orders until we CAP on the exchange we SELL at Gate.io
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 134.38%    Pair: PRMXUSDT
+BUY: 77370603.0 PRMX on Bitmart, SELL on Kucoin
+
+BUY 425.94481402 USDT of PRMX at Bitmart || Average price: 5.50525390140749e-06 USDT
+SELL at Kucoin || Market sell price: 8.25e-06 USDT
+Estimated gain: 212.36 USDT
+Fill all orders until we CAP on the exchange we BUY at Kucoin
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 5.04%    Pair: SHARBIUSDT
+BUY: 191890935.69820002 SHARBI on Bitmart, SELL on Gate.io
+
+BUY at Bitmart || Market buy price: 4.998e-06 USDT
+SELL 980.3593291122957 USDT of SHARBI at Gate.io Average price: 5.108940271437176e-06 USDT
+Estimated gain: 21.29 USDT
+Fill all orders until we CAP on the exchange we SELL at Bitmart
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 1426.03%    Pair: SWPUSDT
+BUY: 251570.07500000024 SWP on Gate.io, SELL on Kucoin
+
+BUY at Gate.io || Market buy price: 0.000922 USDT
+SELL 3294.3793568450014 USDT of SWP at Kucoin Average price: 0.013095275170725286 USDT
+Estimated gain: 3062.43 USDT
+Fill all orders until we CAP on the exchange we SELL at Gate.io
+--------------------------------------------------
+ARBITRAGE FOUND at 10:46:35
+Gain: 165.0%    Pair: TEMUSDT
+BUY: 340777752.33570015 TEM on Gate.io, SELL on Kucoin
+
+BUY at Gate.io || Market buy price: 1e-05 USDT
+SELL 8285.72701712893 USDT of TEM at Kucoin Average price: 2.4314166521547627e-05 USDT
+Estimated gain: 4877.95 USDT
+Fill all orders until we CAP on the exchange we SELL at Gate.io
+--------------------------------------------------
+Arbi Opportunities: 17 
+Unsuccesfull Arbies: 1719 
+
+*NOTE: Market price not accurate measure of profit gain
+
+Last run at 10:46:35
