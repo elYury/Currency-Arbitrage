@@ -4,6 +4,9 @@ from func_bitmart import get_bitmart_orderbook
 from func_gateio import get_gateio_orderbook
 from func_hitbtc import get_hitbtc_orderbook
 from func_kucoin import get_kucoin_orderbook
+from func_kraken import get_kraken_orderbook
+from func_okx import get_okx_orderbook
+from func_hotcoinglobal import get_hotcoinglobal_orderbook
 # ex. bybit = get_""""""_orderbook(symbol, here we put the type of price we are looking for, true = ask)
 
 #-------------------------------------------------------------------------------------------------------------------
@@ -17,32 +20,47 @@ def orderbook_info(symbol, exchange_buy, exchange_sell):
 
     # ASKS
     #request asks from orderbook at the exchange we are trying to buy crypto
-
-    if exchange_buy == 'Bybit':
-        orderbook_asks = get_bybit_orderbook(symbol, True)
-    elif exchange_buy == 'Bitmart':
-        orderbook_asks = get_bitmart_orderbook(symbol, True)
-    elif exchange_buy == 'Gate.io':
-        orderbook_asks = get_gateio_orderbook(symbol, True)
-    elif exchange_buy == 'Hitbtc':
-        orderbook_asks = get_hitbtc_orderbook(symbol, True)
-    elif exchange_buy == 'Kucoin':
-        orderbook_asks = get_kucoin_orderbook(symbol, True)
-
+    try:
+        if exchange_buy == 'Bybit':
+            orderbook_asks = get_bybit_orderbook(symbol, True)
+        elif exchange_buy == 'Bitmart':
+            orderbook_asks = get_bitmart_orderbook(symbol, True)
+        elif exchange_buy == 'Gate.io':
+            orderbook_asks = get_gateio_orderbook(symbol, True)
+        elif exchange_buy == 'Hitbtc':
+            orderbook_asks = get_hitbtc_orderbook(symbol, True)
+        elif exchange_buy == 'Kucoin':
+            orderbook_asks = get_kucoin_orderbook(symbol, True)
+        elif exchange_buy == 'Kraken':
+            orderbook_asks = get_kraken_orderbook(symbol, True)
+        elif exchange_buy == 'OKX':
+            orderbook_asks = get_okx_orderbook(symbol, True)
+        elif exchange_buy == 'Hotcoin_Global':
+            orderbook_asks = get_hotcoinglobal_orderbook(symbol, True)
+    except Exception as error:
+        print(error)
     #-------------------------------------------------------------------------------------------------------------------
     # BIDS
     #request bids from orderbook at the exchange we are trying to sell crypto
-
-    if exchange_sell == 'Bybit':
-        orderbook_bids = get_bybit_orderbook(symbol, False)
-    elif exchange_sell == 'Bitmart':
-        orderbook_bids = get_bitmart_orderbook(symbol, False)
-    elif exchange_sell == 'Gate.io':
-        orderbook_bids = get_gateio_orderbook(symbol, False)
-    elif exchange_sell == 'Hitbtc':
-        orderbook_bids = get_hitbtc_orderbook(symbol, False)
-    elif exchange_sell == 'Kucoin':
-        orderbook_bids = get_kucoin_orderbook(symbol, False)
+    try:
+        if exchange_sell == 'Bybit':
+            orderbook_bids = get_bybit_orderbook(symbol, False)
+        elif exchange_sell == 'Bitmart':
+            orderbook_bids = get_bitmart_orderbook(symbol, False)
+        elif exchange_sell == 'Gate.io':
+            orderbook_bids = get_gateio_orderbook(symbol, False)
+        elif exchange_sell == 'Hitbtc':
+            orderbook_bids = get_hitbtc_orderbook(symbol, False)
+        elif exchange_sell == 'Kucoin':
+            orderbook_bids = get_kucoin_orderbook(symbol, False)
+        elif exchange_sell == 'Kraken':
+            orderbook_bids = get_kraken_orderbook(symbol, False)
+        elif exchange_sell == 'OKX':
+            orderbook_bids = get_okx_orderbook(symbol, False)
+        elif exchange_sell == 'Hotcoin_Global':
+            orderbook_bids = get_hotcoinglobal_orderbook(symbol, False)
+    except Exception as error:
+        print(error)
 
 #-------------------------------------------------------------------------------------------------------------------
 
@@ -142,4 +160,4 @@ def orderbook_info(symbol, exchange_buy, exchange_sell):
 #-------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------
 
-print(orderbook_info('TENETUSDT', 'Bybit', 'Bitmart'))
+#print(orderbook_info('STOREUSDT', 'Gate.io', 'Hotcoin_Global'))

@@ -23,11 +23,12 @@ def get_hitbtc_ticker():
 
     for i in range(len(sym_list)):
         for key in ticker:
-            if sym_list[i] == key and float(ticker[key]["volume_quote"]) >= 10000 :
+            if sym_list[i] == key and float(ticker[key]["volume_quote"]) >= 10000:
                 symbol = sym_list[i]
                 symbol_ticker = {symbol: ticker[key]['last']}
                 ticker_list.append(symbol_ticker)
-                
+    
+    # converts a list of dictionaries into a single dictionary
     sorteddict = {}
     for i in ticker_list:
         sorteddict.update(i)  

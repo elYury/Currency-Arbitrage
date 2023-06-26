@@ -16,9 +16,12 @@ from func_kucoin import get_kucoin_ticker
 from func_gateio import get_gateio_ticker
 from func_hitbtc import get_hitbtc_ticker
 from func_bitmart import get_bitmart_ticker
+from func_kraken import get_kraken_ticker
+from func_okx import get_okx_ticker
+from func_hotcoinglobal import get_hotcoinglobal_ticker
 
 # send to discord
-from func_discord import send_discord
+from discord import send_discord
 
 #import all the symbols from symobol list file
 from sym_list import sym_list
@@ -40,6 +43,7 @@ def main():
     while True:
         #counting success (s) and failiure of abri opportunities
         count = 0
+        near_count = 0
         success_count = 0
 
         #time
@@ -66,6 +70,15 @@ def main():
             megalist.append(get_bitmart_ticker())
             exchange_list.append("Bitmart")
 
+            megalist.append(get_kraken_ticker())
+            exchange_list.append("Kraken")
+
+            megalist.append(get_okx_ticker())
+            exchange_list.append("OKX")
+
+            megalist.append(get_hotcoinglobal_ticker())
+            exchange_list.append("Hotcoin_Global")
+
             print(colored('Tickers loaded successfully\n', 'green'))
 
         except Exception as error:
@@ -82,15 +95,16 @@ def main():
                 # Loop through the second exchange in the megalist
                 for j in range(len(megalist)):
 
-                    #if same exchange is getting compared agaisnt itself then skip
+                    # If same exchange is getting compared agaisnt itself then skip
                     if i == j:
                         continue
 
-                    #try to look at the price, but if one cant be sourced then skip
+                    # Try to look at the price, but if one cant be sourced then skip
                     try:
                         ex1 = float(megalist[i][current_key])
                         ex2 = float(megalist[j][current_key])
                     except:
+                    # If exchanges dont share the crypto then skip
                         continue
 
                     # Market price at exchange 1(sell exchange) is greater than market price at exchange 2(buy exchange)
@@ -116,8 +130,12 @@ def main():
                                 # The 'local variable 'avgprice_asks' or 'avgprice_bids' referenced before assignment' error
                                 # happens when there is a market price difference, but there is no abri opportunity
                                 # because orderbook values are not correct and there is no money to be made
-                                print(error)
-                                count += 1
+                                print(f"Symbol: {current_key}, Buy Ex: {exchange_list[j]}, Sell Ex: {exchange_list[i]}")
+                                if str(error) == "local variable 'avgprice_asks' referenced before assignment":
+                                    print(colored(f"{error}\n", 'light_cyan'))
+                                else:
+                                    print(colored(f"{error}", "red"))
+                                near_count += 1
                                 continue
                             
                             # Assign values from order_book-calc function
@@ -137,7 +155,7 @@ def main():
                             if usdt_gain > estimate_fees:
 
                                 # Text to speech
-                                pyttsx3.speak(f"ARBITRAGE FOUND!")
+                                #pyttsx3.speak(f"ARBITRAGE FOUND!")
 
                                 # Discord message
                                 message1 = ("__**ARBITRAGE FOUND at " + str(current_time) + '**__\n' 
@@ -158,14 +176,15 @@ def main():
                                 # Increment counts for successful arbitrage and unsuccesful ones
                                 success_count += 1
                             else:
-                                count += 1
+                                near_count += 1
                         else:
                             count += 1
 
         #Print info on terminal
-        print(colored(f'Unsuccesfull Arbies: {count}', 'red'))
-        print(colored(f"Arbi Opportunities: {success_count}\n", 'green'))
-        print(colored(f'completed scan at {current_time}\n', 'blue'))
+        print(colored(f'Unsuccesfull Arbies: {count}', 'light_red'))
+        print(colored(f'Filtered Arbies: {near_count}', 'yellow'))
+        print(colored(f"Successful Arbies: {success_count}\n", 'green'))
+        print(colored(f'Compared {count + near_count + success_count} times, completed at {current_time}\n', 'blue'))
 
         # Pause for X seconds 
         time.sleep(30)
