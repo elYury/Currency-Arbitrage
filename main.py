@@ -7,6 +7,9 @@ from termcolor import colored
 #another time lib used for sleep
 import time
 
+#import configuration file
+from config import minimum_difference, estimate_fees, pause_between_runs, pause_between_found_arbitages
+
 #import calc order book
 from order_book_calc import orderbook_info
 
@@ -24,35 +27,31 @@ from func_hotcoinglobal import get_hotcoinglobal_ticker
 from discord import send_discord
 
 #import all the symbols from symobol list file
-from sym_list import sym_list
-from sym_list import ban_list
+from sym_list import sym_list, ban_list
 
 def main():
     #----------------------------------------------------------------------------------
-    #initialize values
+    #initialize symbol values
     key = sym_list
-
-    #minimum % difference for arbitrage
-    minimum_difference = 2.5
-
-    #estimate for all fees in USDT (used to filter unprofitable opportunities)
-    estimate_fees = 20
 
     #------------------------------------------------------------------------------------------
 
     while True:
-        #counting success (s) and failiure of abri opportunities
+        # Time
+        now = datetime.now()
+        start_time = now.strftime("%H:%M:%S")
+
+        # Counting success (s) and failiure of abri opportunities
         count = 0
         near_count = 0
         success_count = 0
 
-        #time
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
-
-        #create a list of dicitonaries one for ticker values and one for exchange names each indexed at the corresponding number
+        # Create a list of dicitonaries one for ticker values and one for exchange names each indexed at the corresponding number
         megalist = []
         exchange_list = []
+
+        # RESULT OF FUNCTION LIST
+        result_list = []
 
         try:
             megalist.append(get_bybit_ticker())
@@ -114,7 +113,7 @@ def main():
                         pcent_diff = ex1/ex2 * 100 - 100
 
                         # Filter by minimum % difference
-                        if pcent_diff > minimum_difference: 
+                        if pcent_diff > minimum_difference and pcent_diff < 100: 
 
                             # Ban List
                             if current_key in ban_list:
@@ -130,14 +129,18 @@ def main():
                                 # The 'local variable 'avgprice_asks' or 'avgprice_bids' referenced before assignment' error
                                 # happens when there is a market price difference, but there is no abri opportunity
                                 # because orderbook values are not correct and there is no money to be made
-                                print(f"Symbol: {current_key}, Buy Ex: {exchange_list[j]}, Sell Ex: {exchange_list[i]}")
                                 if str(error) == "local variable 'avgprice_asks' referenced before assignment":
-                                    print(colored(f"{error}\n", 'light_cyan'))
+                                    pass
                                 else:
+                                    print(f"Symbol: {current_key}, Buy Ex: {exchange_list[j]}, Sell Ex: {exchange_list[i]}")
                                     print(colored(f"{error}", "red"))
                                 near_count += 1
                                 continue
-                            
+
+                            # Time when found
+                            now = datetime.now()
+                            current_time = now.strftime("%H:%M:%S")
+
                             # Assign values from order_book-calc function
                             volume = float(orderinfo['volume'])
                             buy_price = float(orderinfo['buy_price'])
@@ -168,6 +171,21 @@ def main():
                                         + ' USDT\n' + 'SELL ' + str(usdt_sell_amount) + ' USDT ' + 'at ' 
                                         + exchange_list[i] + ' Average sell price: ' + str(sell_price) 
                                         + ' USDT``\n' + '**Estimated gain: ' + str(usdt_gain) + ' USDT**\n')
+                                
+                                # Modify result list with found arbitrage
+                                result = {'time' : current_time,
+                                          'symbol' : current_key,
+                                          'pcent_diff' : round(pcent_diff, 2), 
+                                          'buy_exchange': exchange_list[j], 
+                                          'sell_exchange': exchange_list[i],
+                                          'volume': volume,
+                                          'usdt_buy_amount' : usdt_buy_amount,
+                                          'usdt_sell_amount' : usdt_sell_amount,
+                                          'buy_price' : buy_price,
+                                          'sell_price' : sell_price,
+                                          'usdt_gain' : usdt_gain}
+                                
+                                result_list.append(result)
 
                                 # Send message to discord
                                 message = message1 + message2
@@ -175,18 +193,29 @@ def main():
 
                                 # Increment counts for successful arbitrage and unsuccesful ones
                                 success_count += 1
+
+                                # Combat API Rate Limit
+                                time.sleep(pause_between_found_arbitages)
                             else:
                                 near_count += 1
                         else:
                             count += 1
 
+        # Calculate end time and convert to int
+        now = datetime.now()
+        end_time = now.strftime("%H:%M:%S")
+
+        start = datetime.strptime(start_time, '%H:%M:%S')
+        end = datetime.strptime(end_time, '%H:%M:%S')
+
         #Print info on terminal
         print(colored(f'Unsuccesfull Arbies: {count}', 'light_red'))
         print(colored(f'Filtered Arbies: {near_count}', 'yellow'))
         print(colored(f"Successful Arbies: {success_count}\n", 'green'))
-        print(colored(f'Compared {count + near_count + success_count} times, completed at {current_time}\n', 'blue'))
+        print(colored(f'Compared {count + near_count + success_count} times\n', 'blue'))
+        print(colored(f'Total time taken: {end - start}\n', 'magenta'))
 
         # Pause for X seconds 
-        time.sleep(30)
+        time.sleep(pause_between_runs)
 
 main()

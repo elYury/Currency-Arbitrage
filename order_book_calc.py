@@ -1,4 +1,6 @@
 
+from config import buffer
+
 from func_bybit import get_bybit_orderbook
 from func_bitmart import get_bitmart_orderbook
 from func_gateio import get_gateio_orderbook
@@ -12,11 +14,6 @@ from func_hotcoinglobal import get_hotcoinglobal_orderbook
 #-------------------------------------------------------------------------------------------------------------------
 
 def orderbook_info(symbol, exchange_buy, exchange_sell):
-
-# Initialize buffer for price and volume calculation
-    buffer = 0.1
-    
-#-------------------------------------------------------------------------------------------------------------------
 
     # ASKS
     #request asks from orderbook at the exchange we are trying to buy crypto
