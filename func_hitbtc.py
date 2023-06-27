@@ -39,13 +39,13 @@ def get_hitbtc_ticker():
 
 def get_hitbtc_orderbook(sym, outputask):
     if outputask == False:
-        price = 'bid'
+        price_type = 'bid'
     else:
-        price = 'ask'
+        price_type = 'ask'
     
     orderbook = requests.get('https://api.hitbtc.com/api/3/public/orderbook?depth=100')
     orderbook = orderbook.json()
-    orderbook = orderbook[sym][price]
+    orderbook = orderbook[sym][price_type]
     
     return orderbook
 
