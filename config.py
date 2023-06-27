@@ -2,6 +2,9 @@
 # CONFIGURATION OF ARBITRAGE BOT FILE
 #_________________________________________________________________-
 
+# Used to stop text to speech (False = no text to speech)
+txt_to_speech = False
+
 # Minimum difference between market prices when fetching ticker in order to identifiy potential arbitrage opportunities
 # Measured in %
 minimum_difference = 2.5

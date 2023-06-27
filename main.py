@@ -8,7 +8,7 @@ from termcolor import colored
 import time
 
 #import configuration file
-from config import minimum_difference, estimate_fees, pause_between_runs, pause_between_found_arbitages
+from config import minimum_difference, estimate_fees, pause_between_runs, pause_between_found_arbitages, txt_to_speech
 
 #import calc order book
 from order_book_calc import orderbook_info
@@ -158,7 +158,8 @@ def main():
                             if usdt_gain > estimate_fees:
 
                                 # Text to speech
-                                #pyttsx3.speak(f"ARBITRAGE FOUND!")
+                                if txt_to_speech == True:
+                                    pyttsx3.speak(f"ARBITRAGE FOUND!")
 
                                 # Discord message
                                 message1 = ("__**ARBITRAGE FOUND at " + str(current_time) + '**__\n' 
