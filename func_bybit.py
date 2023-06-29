@@ -1,13 +1,13 @@
 #API Bybit https://bybit-exchange.github.io/docs/v5/intro
-#APIkey = "rVMWSWoabYl8OVisI0"
-#APIsecret = "rAmkTaGjUYiHY9bPSlkLjSzoKq2iIUXpsUl8"
 
 #CdW6mWuIVLIsR5KCwu
 #VGGnB4ZjEg7N3GyDUTiK1JHogH7bI41UpHEA
 
 from pybit.unified_trading import HTTP
 
-session = HTTP(testnet=False)
+session = HTTP(testnet=False,
+                api_key="CdW6mWuIVLIsR5KCwu",
+                api_secret="VGGnB4ZjEg7N3GyDUTiK1JHogH7bI41UpHEA",)
 
 def get_bybit_symbols():
     info = session.get_instruments_info(
@@ -55,7 +55,21 @@ def get_bybit_orderbook(sym, outputask):
     orderbook = orderbook['result'][price]
     return orderbook
 
-#print(get_bybit_orderbook('BTCUSDT', False))
+# We have the ability to look at % fee and currency fee
+# We also have the ability to look at the chaintype
+def get_bybit_d_w(sym, isWithdraw):
+    info = session.get_coin_info(coin=sym)
+    info = info['result']['rows']
+    for i in range(len(info)):
+        data = info[i]['chains']
+        for j in range(len(data)):
+            if isWithdraw == True:
+                if data[j]['withdrawFee'] == '' or data[j]['chainWithdraw'] == 0:
+                    return False
+            else:
+                if data[j]['chainDeposit'] == 0:
+                    return False
+    return True
 
-#print(get_bybit_symbols())
 
+#print(get_bybit_d_w('SAITAMA', False))

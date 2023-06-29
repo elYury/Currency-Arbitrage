@@ -36,7 +36,7 @@ def get_hitbtc_ticker():
     return sorteddict
 
 
-
+# List inside a List [[price, amount], [price, amount]...]
 def get_hitbtc_orderbook(sym, outputask):
     if outputask == False:
         price_type = 'bid'
