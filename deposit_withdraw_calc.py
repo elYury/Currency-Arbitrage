@@ -8,6 +8,9 @@ from func_cexio import get_cexio_d_w, get_cexio_link
 from func_gateio import get_gateio_d_w, get_gateio_link
 from func_hitbtc import get_hitbtc_d_w, get_hitbtc_link
 from func_kucoin import get_kucoin_d_w, get_kucoin_link
+from func_okx import get_okx_link
+from func_kraken import get_kraken_link
+from func_hotcoinglobal import get_hotcoinglobal_link
 
 from config import no_data_list
 
@@ -80,7 +83,13 @@ def get_link(exchange, sym):
     if exchange == 'Bybit':
         link = get_bybit_link(sym)
     if exchange == 'Binance':
-        link = get_binance_link(sym) 
+        link = get_binance_link(sym)
+    if exchange == 'Hotcoin_Global':
+        link = get_hotcoinglobal_link(sym)
+    if exchange == 'OKX':
+        link = get_okx_link(sym)
+    if exchange == 'Kraken':
+        link = get_kraken_link(sym)
     return link
 
 

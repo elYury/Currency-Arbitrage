@@ -14,7 +14,7 @@ minimum_difference = 2.5
 
 # Estimation of fees, the bot will not take arbitrage opportunities which yield a smaller return than the estimation of fees
 # Measured in USDT
-minimum_usdt_amount = 15
+minimum_usdt_amount = 20
 
 # Buffer changes the buy cap (-) and sell cap (+) by the given %
 # Measured in decimal 0.1 = 10%, 0.9 = 90%, tu eres listo eh
@@ -47,7 +47,7 @@ takers = {'Binance': 0.1, 'Hotcoin_Global': 0.2,
           'Bitmex': 0.075, 'Cex.io': 0.25}
 
 # Ban list of cases where cryptos are not the same on different exchanges but share the same name format [{symbol: XXX, exchange_buy: Xxxx, exchange_sell: Xxxx},{},...]
-ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Bybit'}]
+ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Hotcoin_Global'}]
 
 # SECTION FOR API KEYS, SECRETS, AND PASSCODES
 #_________________________________________________________________-

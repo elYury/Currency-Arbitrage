@@ -199,14 +199,14 @@ def main():
                             deposit_available = False                               
 
                             # Loop through diesposit and withdraw data and assign it to our list + see if deposit and withdraw available
-                            for i in range(len(withdraw)):
-                                withdraw_networks.append({withdraw[i]['network']:[withdraw[i]['fee'], withdraw[i]['pcent_fee']]})
-                                if withdraw[i]['available']:
+                            for k in range(len(withdraw)):
+                                withdraw_networks.append({withdraw[k]['network']:[withdraw[k]['fee'], withdraw[k]['pcent_fee']]})
+                                if withdraw[k]['available']:
                                     withdraw_available = True
                             
-                            for i in range(len(deposit)):
-                                deposit_networks.append(deposit[i]['network'])
-                                if deposit[i]['available']:
+                            for l in range(len(deposit)):
+                                deposit_networks.append(deposit[l]['network'])
+                                if deposit[l]['available']:
                                     deposit_available = True
 
                             # Gain larger than minimum amount 
