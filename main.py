@@ -290,7 +290,7 @@ def main():
 
         send_discord('Successful Arbies: ' + str(success_count) + '      Time taken: ' + str(end - start))
         for x in range(5):
-            send_discord(str(x) + '. Babou is GAY')
+            send_discord(str(x + 1) + '. Babou is GAY')
 
         # Pause for X seconds
         print('Paused')
