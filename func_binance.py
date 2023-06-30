@@ -43,7 +43,6 @@ def get_binance_ticker():
     return sorteddict
 
 
-
 def get_binance_orderbook(sym, outputask):
     if outputask == False:
         price_type = 'bids'
@@ -55,5 +54,33 @@ def get_binance_orderbook(sym, outputask):
     orderbook = orderbook[price_type]
     
     return orderbook
+#Doc
+#https://binance-docs.github.io/apidocs/spot/en/#all-coins-39-information-user_data
+# HTTP API
+#https://api.binance.com/sapi/v1/capital/config/getall
 
-#print(get_binance_orderbook('ORNUSDT', False))
+def get_binance_d_w(sym, isWithdraw):
+    return_info = []
+    info = client.get_all_coins_info()
+    for i in range(len(info)):
+        if info[i]['coin'] == sym:
+            network_data = info[i]['networkList']
+
+            # Return True if at least one network is available
+            for j in range(len(network_data)):
+                network = network_data[j]['network']
+                available = True
+                if isWithdraw == True:
+                    fee = network_data[j]['withdrawFee']
+                    if network_data[j]['withdrawEnable'] == False:
+                        available = False
+                else:
+                    fee = 0
+                    if network_data[j]['depositEnable'] == False:
+                        available = False
+
+                dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': 'noData'}
+                return_info.append(dict)
+
+    return return_info 
+

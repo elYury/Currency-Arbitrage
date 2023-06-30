@@ -49,4 +49,25 @@ def get_hitbtc_orderbook(sym, outputask):
     
     return orderbook
 
-#print(get_hitbtc_orderbook('BTCUSDT', False))
+def get_hitbtc_d_w(sym, isWithdraw):
+    info = requests.get("https://api.hitbtc.com/api/3/public/currency?currencies=" + sym)
+    info = info.json()
+    return_info = []
+    for key in info:
+        available = True
+        info = info[key]['networks']
+        for i in range(len(info)):
+            network = info[i]['network']
+            if isWithdraw == True:
+                fee = info[i]['payout_fee']
+                if info[i]['payout_enabled'] == False:
+                    available = False
+            else:
+                fee = 0
+                if info[key]['payin_enabled'] == False:
+                    available = False
+
+            dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': 'noData'}
+            return_info.append(dict)
+
+    return return_info

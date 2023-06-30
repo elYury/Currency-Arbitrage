@@ -67,4 +67,26 @@ def get_bitmart_orderbook(sym, outputask):
 
     return res
 
-#print(get_bitmart_orderbook('LUNAUSDT', False))
+def get_bitmart_d_w(sym, isWithdraw):
+    info = requests.get("https://api-cloud.bitmart.com/account/v1/currencies")
+    info = info.json()
+    info = info['data']['currencies']
+    return_info = []
+    
+    for i in range(len(info)):
+        if info[i]['currency'] == sym:
+            available = True
+            network = info[i]['network']
+            if isWithdraw == True:
+                fee = info[i]['withdraw_minfee']
+                if info[i]['deposit_enabled'] == False:
+                    available = False
+            else:
+                fee = 0
+                if info[i]['withdraw_enabled'] == False:
+                    available = False
+
+            dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': 'noData'}
+            return_info.append(dict)
+
+    return return_info

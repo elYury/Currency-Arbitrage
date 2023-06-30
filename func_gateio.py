@@ -56,4 +56,21 @@ def get_gateio_orderbook(sym, outputask):
     
     return orderbook
 
+def get_gateio_d_w(sym, isWithdraw):
+    info = requests.get("https://api.gateio.ws/api/v4/spot/currencies/" + sym)
+    info = info.json()
+    return_info = []
+    available = True
+    if isWithdraw == True:
+        if info['withdraw_disabled'] == True:
+            available =  False
+    else:
+        if info['deposit_disabled'] == True:
+            available = False
+        
+    dict = {'network': 'noData', 'available': available, 'fee': 'noData', 'pcent_fee': 'noData'}
+    return_info.append(dict)
+
+    return return_info
+
 #print(get_gateio_orderbook('BTCUSDT', False))

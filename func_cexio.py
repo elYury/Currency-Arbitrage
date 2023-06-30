@@ -52,3 +52,37 @@ def get_cexio_orderbook(sym, outputask):
     
     return orderbook
 
+def get_cexio_d_w(sym, isWithdraw):
+    return_info = []
+    info = requests.get("https://api.plus.cex.io/rest-public/get_processing_info")
+    info = info.json()
+    info = info['data']
+
+    for key in info:
+        if key == sym:
+            data = info[key]['blockchains']    
+            for key in data:
+                available = True
+                network = data[key]["type"]
+                if isWithdraw == True:
+                    fee = data[key]["withdrawalFee"]
+                    pcent_fee = data[key]["withdrawalFeePercent"]
+                    if data[key]['withdrawal'] == 'disabled':
+                        available = False 
+                else:
+                    fee = 0
+                    pcent_fee = 0
+                    if data[key]['deposit'] == 'disabled':
+                        available = False
+                if network == 'coin':
+                    network = 'noData'
+                dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': pcent_fee}
+                return_info.append(dict)
+
+    return return_info
+
+# ['algorand', 'avalanche', 'binancesmartchain', 'bitcoin', 'bitcoincash', 
+#  'cardano', 'cosmos', 'cronos', 'dash', 'dogecoin', 'ethereum', 'ethereumpow', 
+#  'everscale', 'fantom', 'flare', 'icp', 'kava', 'kusama', 'litecoin', 'metahash', 
+#  'mina', 'neo', 'neo3', 'ontology', 'optimism', 'polkadot', 'polygon', 'ripple', 
+#  'solana', 'songbird', 'stellar', 'terra', 'terra2', 'tezos', 'tron', 'xdc', 'zilliqa']

@@ -8,11 +8,11 @@ from termcolor import colored
 import time
 
 #import configuration file
-from config import minimum_difference, estimate_fees, pause_between_runs, txt_to_speech
+from config import minimum_difference, minimum_usdt_amount, pause_between_runs, txt_to_speech, ban_list
 
 #import other fuctions
 from order_book_calc import orderbook_info
-from deposit_withdraw_calc import deposit_withdraw
+from deposit_withdraw_calc import get_deposit, get_withdrawal
 
 #import tickers
 from func_bybit import get_bybit_ticker
@@ -30,7 +30,7 @@ from func_binance import get_binance_ticker
 from discord import send_discord
 
 #import all the symbols from symobol list file
-from sym_list import sym_list, ban_list
+from sym_list import sym_list
 
 def main():
     #----------------------------------------------------------------------------------
@@ -121,10 +121,12 @@ def main():
                         pcent_diff = ex1/ex2 * 100 - 100
 
                         # Filter by minimum % difference
-                        if pcent_diff > minimum_difference and pcent_diff < 100: 
+                        if pcent_diff > minimum_difference: 
 
                             # Skip Ban List
-                            if current_key in ban_list:
+                            current_items = {'symbol': current_key, 'exchange_buy': exchange_list[j], 'exchange_sell': exchange_list[i]}
+                            if current_items in ban_list:
+                                print(colored(f"Banned item bypassed", 'light_blue'))
                                 near_count += 1
                                 continue
 
@@ -164,20 +166,32 @@ def main():
                             # GEt symbol base ex. get BTC from BTCUSDT
                             currency_base = current_key.replace("USDT","")
 
+                            # If we have the ability to detect if the symbol is not withrdawable or despositable then skip
+                            try:
+                                print(colored(f"Getting Deposit and withdrawal info: {current_key}, {exchange_list[j]}, {exchange_list[i]}", 'light_blue'))
+                                withdraw = get_withdrawal(current_key, exchange_list[j])
+                                deposit = get_deposit(current_key, exchange_list[i])
+                            except Exception as deposit_withdraw_error:
+                                print(f"Deposit and withdrawal info failed: {current_key}, {exchange_list[j]}, {exchange_list[i]}")
+                                print(colored(f"{deposit_withdraw_error}", "red"))
+
+                            withdraw_networks = []
+                            deposit_networks = []
+                            withdraw_available = False                            
+                            deposit_available = False                               
+
+                            for i in range(len(withdraw)):
+                                withdraw_networks.append({withdraw[i]['network']:[withdraw[i]['fee'], withdraw[i]['pcent_fee']]})
+                                if withdraw[i]['available'] == True:
+                                    withdraw_available = True
+                            
+                            for i in range(len(deposit)):
+                                deposit_networks.append(deposit[i]['network'])
+                                if deposit[i]['available'] == True:
+                                    deposit_available = True
+
                             # Gain larger than fees
-                            if usdt_gain > estimate_fees:
-
-                                # If we have the ability to detect if the symbol is not withrdawable or despositable then skip
-                                try:
-                                    print(colored(f"Fetching Deposit and withdrawal info: {current_key}, {exchange_list[j]}, {exchange_list[i]}", 'light_blue'))
-                                    d_w = deposit_withdraw(current_key, exchange_list[j], exchange_list[i])
-                                except Exception as deposit_withdraw_error:
-                                    print(f"Deposit and withdrawal info failed: {current_key}, {exchange_list[j]}, {exchange_list[i]}")
-                                    print(colored(f"{deposit_withdraw_error}", "red"))
-
-                                if d_w == False:
-                                    near_count += 1
-                                    continue
+                            if usdt_gain > minimum_usdt_amount and deposit_available and withdraw_available:
 
                                 # Text to speech
                                 if txt_to_speech == True:
@@ -195,6 +209,10 @@ def main():
                                         + exchange_list[i] + ' Average sell price: ' + str(sell_price) 
                                         + ' USDT``\n' + '**Estimated gain: ' + str(usdt_gain) + ' USDT**\n')
                                 
+                                message3 = "Withdrawal networks and fees: " + str(withdraw_networks) + "\nDesposit networks: " + str(deposit_networks)
+                                
+                                message4 = "\n---------------------------------------------------------"
+
                                 # Modify result list with found arbitrage
                                 result = {'time' : current_time,
                                             'symbol' : current_key,
@@ -206,12 +224,14 @@ def main():
                                             'usdt_sell_amount' : usdt_sell_amount,
                                             'buy_price' : buy_price,
                                             'sell_price' : sell_price,
-                                            'usdt_gain' : usdt_gain}
+                                            'usdt_gain' : usdt_gain,
+                                            'withdraw_networks' : withdraw_networks,
+                                            'deposit_networks': deposit_networks}
                                 
                                 result_list.append(result)
 
                                 # Send message to discord
-                                message = message1 + message2
+                                message = message1 + message2 + message3 + message4
                                 send_discord(message)
 
                                 # Increment counts for successful arbitrage and unsuccesful ones

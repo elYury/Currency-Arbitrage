@@ -53,5 +53,26 @@ def get_kucoin_orderbook(sym, outputask):
     
     return orderbook
 
+def get_kucoin_d_w(sym, isWithdraw):
+    info = requests.get("https://api.kucoin.com/api/v2/currencies/" + sym)
+    info = info.json()
+    info = info['data']['chains']
+    return_info = []
 
-#print(get_kucoin_orderbook('BTCUSDT', False))
+    for i in range(len(info)):
+        available = True
+        network = info[i]['chainName']
+        if isWithdraw == True:
+            fee = info[i]['withdrawalMinFee']
+            if info[i]['isWithdrawEnabled'] == False:
+                available = False
+        else:
+            fee = 0
+            if info[i]['isDepositEnabled'] == False:
+                available = False
+            
+        dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': 'noData'}
+        return_info.append(dict)
+    
+    return return_info
+        

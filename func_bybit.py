@@ -58,18 +58,30 @@ def get_bybit_orderbook(sym, outputask):
 # We have the ability to look at % fee and currency fee
 # We also have the ability to look at the chaintype
 def get_bybit_d_w(sym, isWithdraw):
+    return_info = []
     info = session.get_coin_info(coin=sym)
     info = info['result']['rows']
+    
     for i in range(len(info)):
-        data = info[i]['chains']
-        for j in range(len(data)):
+        network_data = info[i]['chains']
+
+        for j in range(len(network_data)):
+            pcent_fee = 0
+            network = network_data[j]['chain']
+            available = True
             if isWithdraw == True:
-                if data[j]['withdrawFee'] == '' or data[j]['chainWithdraw'] == 0:
-                    return False
+                fee = network_data[j]['withdrawFee']
+                pcent_fee = network_data[j]["withdrawPercentageFee"]
+                if network_data[j]['withdrawFee'] == '' or network_data[j]['chainWithdraw'] == 0:
+                    available = False
             else:
-                if data[j]['chainDeposit'] == 0:
-                    return False
-    return True
+                fee = 0
+                if network_data[j]['chainDeposit'] == 0:
+                    available = False
+
+            dict = {'network': network, 'available': available, 'fee': fee, 'pcent_fee': pcent_fee}
+            return_info.append(dict)
+
+    return return_info
 
 
-#print(get_bybit_d_w('SAITAMA', False))

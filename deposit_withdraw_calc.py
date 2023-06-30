@@ -2,123 +2,125 @@
 
 import requests
 from func_bybit import get_bybit_d_w
+from func_binance import get_binance_d_w
+from func_bitmart import get_bitmart_d_w
+from func_cexio import get_cexio_d_w
+from func_gateio import get_gateio_d_w
+from func_hitbtc import get_hitbtc_d_w
+from func_kucoin import get_kucoin_d_w
+
+from config import no_data_list
 
 # NOTE: not all exchanges have a function to find out if 
 # they are withdrawable or despoitable to default response is true
 
-def deposit_withdraw(symbol, exchange_buy, exchange_sell):
+def get_withdrawal(symbol, exchange):
 
     sym = symbol.replace('USDT', '')
 
-# Buy exchanges (we only care if withdrawals are possible)
-#______________________________________________________________
+    # Buy exchanges (we only care if withdrawals are possible)
+    if exchange == 'Kucoin':
+        withdrawal_data = get_kucoin_d_w(sym, True)
+    if exchange == 'Hitbtc': 
+        withdrawal_data = get_hitbtc_d_w(sym, True)
+    if exchange == 'Gate.io': 
+        withdrawal_data = get_gateio_d_w(sym, True)
+    if exchange == 'Cex.io': 
+        withdrawal_data = get_cexio_d_w(sym, True)
+    if exchange == 'Bitmart': 
+        withdrawal_data = get_bitmart_d_w(sym, True)
+    if exchange == 'Bybit':
+        withdrawal_data = get_bybit_d_w(sym, True)
+    if exchange == 'Binance':
+        withdrawal_data = get_binance_d_w(sym, True)
 
-    if exchange_buy == 'Kucoin':
-        info = requests.get("https://api.kucoin.com/api/v1/currencies/" + sym)
-        info = info.json()
-        info = info['data']
-        if info['isWithdrawEnabled'] == False:
-            return False
+    if exchange in no_data_list:
+        withdrawal_data = [{'network': 'noData', 'available': True, 'fee': 'noData', 'pcent_fee': 'noData'}]
+
+    return withdrawal_data
+
+
+def get_deposit(symbol, exchange):
+
+    sym = symbol.replace('USDT', '')
+
+    # Sell exchanges (we only care if deposits are possible)
+    if exchange == 'Kucoin':
+        deposit_data = get_kucoin_d_w(sym, False)
+    if exchange == 'Hitbtc': 
+        deposit_data = get_hitbtc_d_w(sym, False)
+    if exchange == 'Gate.io': 
+        deposit_data = get_gateio_d_w(sym, False)
+    if exchange == 'Cex.io': 
+        deposit_data = get_cexio_d_w(sym, False)
+    if exchange == 'Bitmart': 
+        deposit_data = get_bitmart_d_w(sym, False)
+    if exchange == 'Bybit':
+        deposit_data = get_bybit_d_w(sym, False)
+    if exchange == 'Binance':
+        deposit_data = get_binance_d_w(sym, False) 
     
-    if exchange_buy == 'Hitbtc': 
-        info = requests.get("https://api.hitbtc.com/api/3/public/currency?currencies=" + sym)
-        info = info.json()
-        for key in info:
-            if info[key]['payout_enabled'] == False:
-                    return False
-    
-    if exchange_buy == 'Gate.io': 
-        info = requests.get("https://api.gateio.ws/api/v4/spot/currencies/" + sym)
-        info = info.json()
-        if info['withdraw_disabled'] == True:
-                return False
-    
-    if exchange_buy == 'Cex.io': 
-        info = requests.get("https://api.plus.cex.io/rest-public/get_processing_info")
-        info = info.json()
-        info = info['data']
-        for key in info:
-            if info[key] == sym:
-                data = info[key]['blockchains']     
-                for key in data:
-                    data[key]['withdrawal'] == 'disabled'
-                    return False    
-            return False
+    if exchange in no_data_list:
+        deposit_data = [{'network': 'noData', 'available': True, 'fee': 'noData', 'pcent_fee': 'noData'}]
         
-    if exchange_buy == 'Bitmart': 
-        info = requests.get("https://api-cloud.bitmart.com/spot/v1/currencies")
-        info = info.json()
-        info = info['data']['currencies']
-        for i in range(len(info)):
-            if info[i]['id'] == sym and info[i]['withdraw_enabled'] == False:
-                return False
-            
-    if exchange_buy == 'Bybit':
-        if get_bybit_d_w(sym, True) == False:
-            return False
-            
-# Sell exchanges (we only care if deposits are possible)
-#______________________________________________________________
-
-    if exchange_sell == 'Kucoin':
-        info = requests.get("https://api.kucoin.com/api/v1/currencies/" + sym )
-        info = info.json()
-        info = info['data']
-        if info['isDepositEnabled'] == False:
-            return False
-    
-    if exchange_sell == 'Hitbtc': 
-        info = requests.get("https://api.hitbtc.com/api/3/public/currency?currencies=" + sym)
-        info = info.json()
-        for key in info:
-            if info[key]['payin_enabled'] == False:
-                return False
-
-    if exchange_sell == 'Gate.io': 
-        info = requests.get("https://api.gateio.ws/api/v4/spot/currencies/" + sym)
-        info = info.json()
-        if info['deposit_disabled'] == True:
-                return False
-    
-    if exchange_sell == 'Cex.io': 
-        info = requests.get("https://api.plus.cex.io/rest-public/get_processing_info")
-        info = info.json()
-        info = info['data']
-        for key in info:
-            if info[key] == sym:
-                data = info[key]['blockchains']    
-                for key in data:
-                    data[key]['deposit'] == 'disabled'
-                    return False
-    
-    if exchange_sell == 'Bitmart': 
-        info = requests.get("https://api-cloud.bitmart.com/spot/v1/currencies")
-        info = info.json()
-        info = info['data']['currencies']
-        for i in range(len(info)):
-            if info[i]['id'] == sym and info[i]['deposit_enabled'] == False:
-                return False
-            
-    if exchange_sell == 'Bybit':
-        if get_bybit_d_w(sym, False) == False:
-            return False
-
-    return True
-
-
-#TODO: Binance https://api.binance.com/sapi/v1/capital/config/getall
-
-
-
-#print(deposit_withdraw('SAITAMA','Bybit', 'x'))
+    return deposit_data
 
 
 #NOTE: NO easy way of getting withdrawal/deposit status for the following exchanges
             # OKX
             # KRAKEN
             # HOTCOIN GLOBAL
-            # 
 
-#gate.io has fixed rate param, and chain
 
+# BINANCE
+#https://binance-docs.github.io/apidocs/spot/en/#all-coins-39-information-user_data
+#Binance has chain, fee and esimated arrival time
+# fee
+# https://binance-docs.github.io/apidocs/spot/en/#asset-detail-user_data
+
+# BYbit
+#https://bybit-exchange.github.io/docs/v5/asset/coin-info
 #bybit has % fee and currency fee and chain
+# fee
+# https://bybit-exchange.github.io/docs/v5/account/fee-rate
+
+# BITMART
+#https://developer-pro.bitmart.com/en/spot/#get-currencies
+#bitmart has chains and withdrawal min fee
+# i need to change the api call to the above link
+# fee 
+# https://developer-pro.bitmart.com/en/spot/#get-actual-trade-fee-rate-keyed
+
+# CEX.IO
+#https://docs.plus.cex.io/#rest-public-api-calls-processing-info
+#cex.io has chains but they are in a stupid format + has withdrawal fees
+#trading fee
+#https://docs.plus.cex.io/#rest-private-api-calls-fee
+
+# GATE.IO
+#https://www.gate.io/docs/developers/apiv4/en/#retrieve-withdrawal-status
+# and 
+#https://www.gate.io/docs/developers/apiv4/en/#list-chains-supported-for-specified-currency
+# Fixed withdrawal fee on chains + fixed withdrawal fee ? or not
+#gate.io has fixed rate param, and chain
+# fee
+#https://www.gate.io/docs/developers/apiv4/en/#retrieve-personal-trading-fee
+
+# HITBTC
+# https://api.hitbtc.com/#currencies
+# has withdrawal fee, and chains
+# fee
+# https://api.hitbtc.com/#get-all-trading-commissions
+
+# HOTCOINGLOBAL
+
+# KRAKEN
+
+# KUCOIN
+# https://docs.kucoin.com/#get-currency-detail-recommend
+# chains, and withdrawal fees
+# fee 
+# https://docs.kucoin.com/#actual-fee-rate-of-the-trading-pair
+
+
+# OKX
