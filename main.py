@@ -288,6 +288,10 @@ def main():
         print(colored(f'Compared {count + near_count + success_count} times\n', 'blue'))
         print(colored(f'Total time taken: {end - start}\n', 'magenta'))
 
+        send_discord('Successful Arbies: ' + str(success_count) + '      Time taken: ' + str(end - start))
+        for x in range(5):
+            send_discord(str(x) + '. Babou is GAY')
+
         # Pause for X seconds
         print('Paused')
         time.sleep(pause_between_runs)
