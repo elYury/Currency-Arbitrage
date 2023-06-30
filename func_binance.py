@@ -84,3 +84,7 @@ def get_binance_d_w(sym, isWithdraw):
 
     return return_info 
 
+def get_binance_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.binance.com/en/trade/' + sym + '_USDT?theme=light&type=spot'
+    return link

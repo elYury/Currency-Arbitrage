@@ -81,6 +81,12 @@ def get_cexio_d_w(sym, isWithdraw):
 
     return return_info
 
+
+def get_cexio_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://cex.io/' + sym + '-usdt'
+    return link
+
 # ['algorand', 'avalanche', 'binancesmartchain', 'bitcoin', 'bitcoincash', 
 #  'cardano', 'cosmos', 'cronos', 'dash', 'dogecoin', 'ethereum', 'ethereumpow', 
 #  'everscale', 'fantom', 'flare', 'icp', 'kava', 'kusama', 'litecoin', 'metahash', 

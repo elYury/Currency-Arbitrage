@@ -5,6 +5,9 @@
 # Used to stop text to speech (False = no text to speech)
 txt_to_speech = False
 
+# Balance available to trade with in USDT
+balance = 1000
+
 # Minimum difference between market prices when fetching ticker in order to identifiy potential arbitrage opportunities
 # Measured in %
 minimum_difference = 2.5
@@ -24,27 +27,27 @@ pause_between_runs = 60
 # list of exchanges where withdraw and deposit data is lacking
 no_data_list = ['Hotcoin_Global', 'OKX', 'Kraken']
 
-# Ban list of cases where cryptos are not the same on different exchanges but share the same name format [{symbol: XXX, exchange_buy: Xxxx, exchange_sell: Xxxx},{},...]
+# Takers fee list
+takers = {'Binance': 0.1, 'Hotcoin_Global': 0.2, 
+          'Pionex': 0.05, 'Bitforex': 0.1, 
+          'OKX': 0.1, 'Upbit': 0.2, 
+          'Coinbase_Pro': 0.6, 'Coinw': 0.2, 
+          'Bybit': 0.1, 'Kraken': 0.26, 
+          'Tapbit': 0.1, 'Kucoin': 0.1, 
+          'Bitget': 0.1, 'Bitmart': 0.1, 
+          'Hitbtc': 0.25, 'Gate.io': 0.2, 
+          'Btcex': 0.1, 'Lbank': 0.1, 
+          'Mexc': 0, 'XT.com': 0.2, 
+          'P2B': 0.2, 'Bkex': 0.2, 
+          'Toobit': 0.2, 'Huobi': 0.2, 
+          'Cointr_Pro': 0.2, 'Bitstramp': 0.4, 
+          'Bitfinex': 0.2, 'Latoken': 0.5, 
+          'Crypto.com': 0.075, 'Bitflyer': 0.15, 
+          'Poloniex': 0.2, 'Gemini': 0.4, 
+          'Bitmex': 0.075, 'Cex.io': 0.25}
 
-ban_list =[{'symbol': 'AIUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'ANCUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'}, 
-           {'symbol': 'ANCUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Bitmart'}, 
-           {'symbol': 'BFCUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'BFCUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Gate.io'}, 
-           {'symbol': 'BFTUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Hotcoin_Global'}, 
-           {'symbol': 'BTGUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Gate.io'}, 
-           {'symbol': 'BUYUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'}, 
-           {'symbol': 'DYPUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'FAMEUSDT', 'exchange_buy': 'Bybit', 'exchange_sell': 'Gate.io'},
-           {'symbol': 'FAMEUSDT', 'exchange_buy': 'OKX', 'exchange_sell': 'Bybit'}, 
-           {'symbol': 'HECUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Bitmart'}, 
-           {'symbol': 'MMMUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'PLCUUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Bitmart'}, 
-           {'symbol': 'PRMXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'SWPUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'TEMUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Kucoin'}, 
-           {'symbol': 'WSBUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'OKX'},
-           {'symbol': 'WSBUSDT', 'exchange_buy': 'Bitmart', 'exchange_sell': 'Bybit'}]
+# Ban list of cases where cryptos are not the same on different exchanges but share the same name format [{symbol: XXX, exchange_buy: Xxxx, exchange_sell: Xxxx},{},...]
+ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Bybit'}]
 
 # SECTION FOR API KEYS, SECRETS, AND PASSCODES
 #_________________________________________________________________-

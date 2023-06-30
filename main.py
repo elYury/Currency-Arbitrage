@@ -8,23 +8,23 @@ from termcolor import colored
 import time
 
 #import configuration file
-from config import minimum_difference, minimum_usdt_amount, pause_between_runs, txt_to_speech, ban_list
+from config import minimum_difference, minimum_usdt_amount, pause_between_runs, txt_to_speech, ban_list, balance, takers
 
 #import other fuctions
 from order_book_calc import orderbook_info
-from deposit_withdraw_calc import get_deposit, get_withdrawal
+from deposit_withdraw_calc import get_deposit, get_withdrawal, get_link
 
 #import tickers
-from func_bybit import get_bybit_ticker
-from func_kucoin import get_kucoin_ticker
-from func_gateio import get_gateio_ticker
-from func_hitbtc import get_hitbtc_ticker
-from func_bitmart import get_bitmart_ticker
-from func_kraken import get_kraken_ticker
-from func_okx import get_okx_ticker
-from func_hotcoinglobal import get_hotcoinglobal_ticker
-from func_cexio import get_cexio_ticker
-from func_binance import get_binance_ticker
+from func_bybit import get_bybit_ticker#, get_bybit_link
+from func_kucoin import get_kucoin_ticker#, get_kucoin_link
+from func_gateio import get_gateio_ticker#, get_gateio_link
+from func_hitbtc import get_hitbtc_ticker#, get_hitbtc_link
+from func_bitmart import get_bitmart_ticker#, get_bitmart_link
+from func_kraken import get_kraken_ticker#, get_kraken_link
+from func_okx import get_okx_ticker#, get_okx_link
+from func_hotcoinglobal import get_hotcoinglobal_ticker#, hotcoinglobal_link
+from func_cexio import get_cexio_ticker#, get_cexio_link
+from func_binance import get_binance_ticker#, get_binance_link
 
 # send to discord
 from discord import send_discord
@@ -86,10 +86,10 @@ def main():
             megalist.append(get_binance_ticker())
             exchange_list.append("Binance")
 
-            print(colored('Tickers loaded successfully\n', 'green'))
+            print(colored('\nTickers loaded successfully\n', 'green'))
 
         except Exception as error:
-            print(colored('Tickers NOT loaded\n', 'red'))
+            print(colored('\nTickers NOT loaded\n', 'red'))
             print(error)
 
         # calculation looping over each key on each exchange
@@ -121,13 +121,17 @@ def main():
                         pcent_diff = ex1/ex2 * 100 - 100
 
                         # Filter by minimum % difference
-                        if pcent_diff > minimum_difference: 
+                        if pcent_diff > minimum_difference and pcent_diff < 100: 
 
                             # Skip Ban List
-                            current_items = {'symbol': current_key, 'exchange_buy': exchange_list[j], 'exchange_sell': exchange_list[i]}
-                            if current_items in ban_list:
-                                print(colored(f"Banned item bypassed", 'light_blue'))
-                                near_count += 1
+                            skip = False
+                            for n in range(len(ban_list)):
+                                if current_key == ban_list[n]['symbol'] and exchange_list[j] == ban_list[n]['exchange_buy'] and exchange_list[i] == ban_list[n]['exchange_sell']:
+                                    print(colored(f"Banned item bypassed", 'light_blue'))
+                                    near_count += 1
+                                    skip = True
+                                    break
+                            if skip:
                                 continue
 
                             # Try fetch the orderbook info values if it fails then skip to the next symbol
@@ -149,6 +153,15 @@ def main():
                                 near_count += 1
                                 continue
 
+                            # If we have the ability to detect if the symbol is not withrdawable or despositable then skip
+                            try:
+                                print(colored(f"Getting Deposit and withdrawal info: {current_key}, {exchange_list[j]}, {exchange_list[i]}", 'light_blue'))
+                                withdraw = get_withdrawal(current_key, exchange_list[j])
+                                deposit = get_deposit(current_key, exchange_list[i])
+                            except Exception as deposit_withdraw_error:
+                                print(f"Deposit and withdrawal info failed: {current_key}, {exchange_list[j]}, {exchange_list[i]}")
+                                print(colored(f"{deposit_withdraw_error}", "red"))
+
                             # Time when found
                             now = datetime.now()
                             current_time = now.strftime("%H:%M:%S")
@@ -162,36 +175,46 @@ def main():
                             usdt_buy_amount = buy_price * volume
                             usdt_sell_amount = sell_price * volume
                             usdt_gain = round(usdt_sell_amount - usdt_buy_amount, 2)
+                            takers_fee = round(sell_price * (float(volume) * takers[exchange_list[j]]/100 + float(volume) * takers[exchange_list[i]]/100), 2)
 
-                            # GEt symbol base ex. get BTC from BTCUSDT
+                            # Estimate profit basaed on balance ------ balance_buy_amount = balance
+                            if usdt_buy_amount > balance:
+                                balance_volume = str(balance / buy_price)
+                                balance_sell_amount = str(float(balance_volume) * sell_price)
+                                balance_usdt_gain = str(round(float(balance_sell_amount) - balance, 2))
+                                balance_takers_fee = str(round(sell_price * (float(balance_volume) * takers[exchange_list[j]]/100 + float(balance_volume) * takers[exchange_list[i]]/100), 2))
+                            else:
+                                balance_volume = '-'
+                                balance_sell_amount = '-'
+                                balance_usdt_gain = 'Balance higher than buy amount'
+                                balance_takers_fee = '-'
+
+                            # Get symbol base ex. get BTC from BTCUSDT
                             currency_base = current_key.replace("USDT","")
 
-                            # If we have the ability to detect if the symbol is not withrdawable or despositable then skip
-                            try:
-                                print(colored(f"Getting Deposit and withdrawal info: {current_key}, {exchange_list[j]}, {exchange_list[i]}", 'light_blue'))
-                                withdraw = get_withdrawal(current_key, exchange_list[j])
-                                deposit = get_deposit(current_key, exchange_list[i])
-                            except Exception as deposit_withdraw_error:
-                                print(f"Deposit and withdrawal info failed: {current_key}, {exchange_list[j]}, {exchange_list[i]}")
-                                print(colored(f"{deposit_withdraw_error}", "red"))
-
+                            # Declare variables
                             withdraw_networks = []
                             deposit_networks = []
                             withdraw_available = False                            
                             deposit_available = False                               
 
+                            # Loop through diesposit and withdraw data and assign it to our list + see if deposit and withdraw available
                             for i in range(len(withdraw)):
                                 withdraw_networks.append({withdraw[i]['network']:[withdraw[i]['fee'], withdraw[i]['pcent_fee']]})
-                                if withdraw[i]['available'] == True:
+                                if withdraw[i]['available']:
                                     withdraw_available = True
                             
                             for i in range(len(deposit)):
                                 deposit_networks.append(deposit[i]['network'])
-                                if deposit[i]['available'] == True:
+                                if deposit[i]['available']:
                                     deposit_available = True
 
-                            # Gain larger than fees
+                            # Gain larger than minimum amount 
                             if usdt_gain > minimum_usdt_amount and deposit_available and withdraw_available:
+
+                                # Get links to exchange dashboard
+                                buy_link = get_link(exchange_list[j], current_key)
+                                sell_link = get_link(exchange_list[i], current_key)
 
                                 # Text to speech
                                 if txt_to_speech == True:
@@ -199,7 +222,7 @@ def main():
 
                                 # Discord message
                                 message1 = ("__**ARBITRAGE FOUND at " + str(current_time) + '**__\n' 
-                                        + '**' + current_key + '**' + ' ' + str(round(pcent_diff, 2)) + '%' 
+                                        + '**' + current_key + '**' + ' ' + str(round(pcent_diff, 2)) + '%\n' 
                                         + '\n' + '**BUY: ' + str(volume) + ' ' + currency_base + ' on ' 
                                         + exchange_list[j] + ', SELL on ' + exchange_list[i] + '**\n')
                                 
@@ -207,13 +230,20 @@ def main():
                                         + ' at ' + exchange_list[j] + ' Average buy price: ' + str(buy_price) 
                                         + ' USDT\n' + 'SELL ' + str(usdt_sell_amount) + ' USDT ' + 'at ' 
                                         + exchange_list[i] + ' Average sell price: ' + str(sell_price) 
-                                        + ' USDT``\n' + '**Estimated gain: ' + str(usdt_gain) + ' USDT**\n')
+                                        + ' USDT``\n' + 'Gain:** ' + str(usdt_gain) + "** USDT Taker's fees:** " 
+                                        + str(takers_fee) + ' USDT**\n')
                                 
-                                message3 = "Withdrawal networks and fees: " + str(withdraw_networks) + "\nDesposit networks: " + str(deposit_networks)
-                                
-                                message4 = "\n---------------------------------------------------------"
+                                message3 = ("\nBalance: " + str(balance) + ' USDT' + "\n**Buy: " + balance_volume + " " + currency_base 
+                                            + '**\nEstimate gain based on balance:** ' + balance_usdt_gain + " USDT**\n"
+                                            + "Balance taker's fees:** " + balance_takers_fee + " USDT**\n")
 
-                                # Modify result list with found arbitrage
+                                message4 = ("\n**Networks**\n``Withdrawal networks and fees: " + str(withdraw_networks) 
+                                            + "\nDesposit networks: " + str(deposit_networks) + "``\n")
+                                
+                                message5 = "\n**Links:**\nBuy Exchange: " + buy_link + '\nSell Exchange: ' + sell_link
+                                message6 = "\n---------------------------------------------------------"
+
+                                # Append result list with found arbitrage
                                 result = {'time' : current_time,
                                             'symbol' : current_key,
                                             'pcent_diff' : round(pcent_diff, 2), 
@@ -231,7 +261,7 @@ def main():
                                 result_list.append(result)
 
                                 # Send message to discord
-                                message = message1 + message2 + message3 + message4
+                                message = message1 + message2 + message3 + message4 + message5 + message6
                                 send_discord(message)
 
                                 # Increment counts for successful arbitrage and unsuccesful ones

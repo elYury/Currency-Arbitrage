@@ -1,13 +1,13 @@
 # hitbtc has a function to find out the fee of transaction
 
 import requests
-from func_bybit import get_bybit_d_w
-from func_binance import get_binance_d_w
-from func_bitmart import get_bitmart_d_w
-from func_cexio import get_cexio_d_w
-from func_gateio import get_gateio_d_w
-from func_hitbtc import get_hitbtc_d_w
-from func_kucoin import get_kucoin_d_w
+from func_bybit import get_bybit_d_w, get_bybit_link
+from func_binance import get_binance_d_w, get_binance_link
+from func_bitmart import get_bitmart_d_w, get_bitmart_link
+from func_cexio import get_cexio_d_w, get_cexio_link
+from func_gateio import get_gateio_d_w, get_gateio_link
+from func_hitbtc import get_hitbtc_d_w, get_hitbtc_link
+from func_kucoin import get_kucoin_d_w, get_kucoin_link
 
 from config import no_data_list
 
@@ -64,6 +64,24 @@ def get_deposit(symbol, exchange):
         deposit_data = [{'network': 'noData', 'available': True, 'fee': 'noData', 'pcent_fee': 'noData'}]
         
     return deposit_data
+
+def get_link(exchange, sym):
+
+    if exchange == 'Kucoin':
+        link = get_kucoin_link(sym)
+    if exchange == 'Hitbtc': 
+        link = get_hitbtc_link(sym)
+    if exchange == 'Gate.io': 
+        link = get_gateio_link(sym)
+    if exchange == 'Cex.io': 
+        link = get_cexio_link(sym)
+    if exchange == 'Bitmart': 
+        link = get_bitmart_link(sym)
+    if exchange == 'Bybit':
+        link = get_bybit_link(sym)
+    if exchange == 'Binance':
+        link = get_binance_link(sym) 
+    return link
 
 
 #NOTE: NO easy way of getting withdrawal/deposit status for the following exchanges

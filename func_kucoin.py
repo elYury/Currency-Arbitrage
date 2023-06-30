@@ -75,4 +75,10 @@ def get_kucoin_d_w(sym, isWithdraw):
         return_info.append(dict)
     
     return return_info
-        
+
+
+def get_kucoin_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.kucoin.com/trade/' + sym + '-USDT'
+    return link
+  

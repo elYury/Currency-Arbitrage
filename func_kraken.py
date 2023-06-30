@@ -54,3 +54,8 @@ def get_kraken_orderbook(sym, outputask):
     
     return orderbook
 
+
+def get_kraken_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://pro.kraken.com/app/trade/' + sym + '_usdt'
+    return link

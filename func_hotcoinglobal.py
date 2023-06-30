@@ -52,3 +52,8 @@ def get_hotcoinglobal_orderbook(sym, outputask):
     return orderbook
 
 
+def get_hotcoinglobal_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://hotcoin.com/currencyExchangeTwo/' + sym + '_usdt'
+    return link
+

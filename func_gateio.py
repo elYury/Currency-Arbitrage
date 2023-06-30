@@ -73,4 +73,11 @@ def get_gateio_d_w(sym, isWithdraw):
 
     return return_info
 
+
+def get_gateio_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.gate.io/trade/' + sym + '_USDT'
+    return link
+
+
 #print(get_gateio_orderbook('BTCUSDT', False))

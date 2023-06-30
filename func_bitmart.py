@@ -90,3 +90,8 @@ def get_bitmart_d_w(sym, isWithdraw):
             return_info.append(dict)
 
     return return_info
+
+def get_bitmart_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.bitmart.com/trade/en-US?layout=pro&theme=dark&symbol=' + sym + '_USDT'
+    return link

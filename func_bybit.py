@@ -85,3 +85,7 @@ def get_bybit_d_w(sym, isWithdraw):
     return return_info
 
 
+def get_bybit_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.bybit.com/en-US/trade/spot/' + sym + '/USDT'
+    return link

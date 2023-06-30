@@ -71,3 +71,8 @@ def get_hitbtc_d_w(sym, isWithdraw):
             return_info.append(dict)
 
     return return_info
+
+def get_hitbtc_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://hitbtc.com/' + sym + '-to-usdt'
+    return link

@@ -62,3 +62,7 @@ def get_okx_orderbook(sym, outputask):
 
     return orderbook
 
+def get_okx_link(symbol):
+    sym = symbol.replace('USDT', '')
+    link = 'https://www.okx.com/trade-spot/' + sym + '-usdt'
+    return link
