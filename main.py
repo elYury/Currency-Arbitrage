@@ -15,16 +15,16 @@ from order_book_calc import orderbook_info
 from deposit_withdraw_calc import get_deposit, get_withdrawal, get_link
 
 #import tickers
-from func_bybit import get_bybit_ticker#, get_bybit_link
-from func_kucoin import get_kucoin_ticker#, get_kucoin_link
-from func_gateio import get_gateio_ticker#, get_gateio_link
-from func_hitbtc import get_hitbtc_ticker#, get_hitbtc_link
-from func_bitmart import get_bitmart_ticker#, get_bitmart_link
-from func_kraken import get_kraken_ticker#, get_kraken_link
-from func_okx import get_okx_ticker#, get_okx_link
-from func_hotcoinglobal import get_hotcoinglobal_ticker#, hotcoinglobal_link
-from func_cexio import get_cexio_ticker#, get_cexio_link
-from func_binance import get_binance_ticker#, get_binance_link
+from func_bybit import get_bybit_ticker, get_bybit_link
+from func_kucoin import get_kucoin_ticker, get_kucoin_link
+from func_gateio import get_gateio_ticker, get_gateio_link
+from func_hitbtc import get_hitbtc_ticker, get_hitbtc_link
+from func_bitmart import get_bitmart_ticker, get_bitmart_link
+from func_kraken import get_kraken_ticker, get_kraken_link
+from func_okx import get_okx_ticker, get_okx_link
+from func_hotcoinglobal import get_hotcoinglobal_ticker, hotcoinglobal_link
+from func_cexio import get_cexio_ticker, get_cexio_link
+from func_binance import get_binance_ticker, get_binance_link
 
 # send to discord
 from discord import send_discord
