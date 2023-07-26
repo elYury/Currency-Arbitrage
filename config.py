@@ -6,7 +6,7 @@
 txt_to_speech = False
 
 # Balance available to trade with in USDT
-balance = 1000
+balance = 300
 
 # Minimum difference between market prices when fetching ticker in order to identifiy potential arbitrage opportunities
 # Measured in %
@@ -47,9 +47,7 @@ takers = {'Binance': 0.1, 'Hotcoin_Global': 0.2,
           'Bitmex': 0.075, 'Cex.io': 0.25}
 
 # Ban list of cases where cryptos are not the same on different exchanges but share the same name format [{symbol: XXX, exchange_buy: Xxxx, exchange_sell: Xxxx},{},...]
-ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Hotcoin_Global'}]
+ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Hotcoin_Global'}, {'symbol': 'ANCUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'}, {'symbol': 'ANCUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Bitmart'}, {'symbol': 'COTIUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Binance'}, {'symbol': 'MDXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Hotcoin_Global'}, {'symbol': 'MDXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Binance'}, {'symbol': 'MDXUSDT', 'exchange_buy': 'Hotcoin_Global', 'exchange_sell': 'Binance'}, {'symbol': 'MIRUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'}, {'symbol': 'MIRUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Bitmart'}, {'symbol': 'WNXMUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'Binance'},{'symbol': 'COTIUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'}, {'symbol': 'QIUSDT', 'exchange_buy': 'Binance', 'exchange_sell': 'Gate.io'}, {'symbol': 'TRACUSDT', 'exchange_buy': 'Kucoin', 'exchange_sell': 'Gate.io'},{'symbol': 'COMPUSDT', 'exchange_buy': 'Hitbtc', 'exchange_sell': 'Kucoin'}]
 
 # SECTION FOR API KEYS, SECRETS, AND PASSCODES
 #_________________________________________________________________-
-
-

@@ -54,6 +54,7 @@ def main():
 
         # RESULT OF FUNCTION LIST
         result_list = []
+        tmpdict = []
 
         try:
             megalist.append(get_bybit_ticker())
@@ -210,7 +211,7 @@ def main():
                                     deposit_available = True
 
                             # Gain larger than minimum amount 
-                            if usdt_gain > minimum_usdt_amount and deposit_available and withdraw_available:
+                            if usdt_gain > (takers_fee + minimum_usdt_amount) and deposit_available and withdraw_available:
 
                                 # Get links to exchange dashboard
                                 buy_link = get_link(exchange_list[j], current_key)
@@ -258,7 +259,10 @@ def main():
                                             'withdraw_networks' : withdraw_networks,
                                             'deposit_networks': deposit_networks}
                                 
+                                tmp = {'symbol': current_key, 'exchange_buy': exchange_list[j], 'exchange_sell': exchange_list[i]}
+                                
                                 result_list.append(result)
+                                tmpdict.append(tmp)
 
                                 # Send message to discord
                                 message = message1 + message2 + message3 + message4 + message5 + message6
@@ -288,9 +292,7 @@ def main():
         print(colored(f'Compared {count + near_count + success_count} times\n', 'blue'))
         print(colored(f'Total time taken: {end - start}\n', 'magenta'))
 
-        send_discord('Successful Arbies: ' + str(success_count) + '      Time taken: ' + str(end - start))
-        for x in range(5):
-            send_discord(str(x + 1) + '. Babou is REALLY GAY')
+        print(tmpdict)
 
         # Pause for X seconds
         print('Paused')
