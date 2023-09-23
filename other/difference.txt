@@ -1,6 +1,0 @@
-Difference in ADPUSDT of 7.479674796747986% B: Bitmart, S:Gate.io
-Difference in ANCUSDT of 16.00370027752082% B: Kucoin, S:Gate.io
-Difference in ANCUSDT of 14.708603145235884% B: Kucoin, S:Bitmart
-Difference in BABYDOGEUSDT of 2.685421994884905% B: Gate.io, S:Bybit
-Difference in BRISEUSDT of 2.575174687917084% B: Gate.io, S:Kucoin
-Difference in BRISEUSDT of 3.3295063145809536% B: Kucoin, S:Bitmart
