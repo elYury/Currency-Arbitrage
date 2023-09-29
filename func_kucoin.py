@@ -3,7 +3,7 @@
 import requests
 from kucoin.client import Market
 
-client = Market(key='647f1dd6a19a0000016203f6', secret='5ab47452-b349-413a-85f4-0642421864c5', passphrase='kucoinhasagoodapim8', url='https://openapi-v2.kucoin.com')
+client = Market(key='no key for you', secret='no pass for you', passphrase=';)', url='https://openapi-v2.kucoin.com')
 
 
 def get_kucoin_symbols():
