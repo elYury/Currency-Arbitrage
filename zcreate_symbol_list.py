@@ -1,3 +1,4 @@
+# Dont be judgy we all have written spaggetti code, it gets the job done. But need quality of life improvments.
 from func_bybit import get_bybit_symbols
 from func_kucoin import get_kucoin_symbols
 from func_gateio import get_gateio_symbols
