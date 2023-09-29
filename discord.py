@@ -9,7 +9,7 @@ def send_discord(text):
     }
 
     header = {
-        'authorization': 'MTExNzczMzg0MTg5Mzg3MTYxNw.Gh9JSN.RTOe-NTcHW9nZlcVfKc6DEqBEFQ6zUuntbu5YM'
+        'authorization': 'security is number one priority'
     }
 
     r = requests.post("https://discord.com/api/v9/channels/1117711348747477075/messages", 
