@@ -1,13 +1,9 @@
 #API Bybit https://bybit-exchange.github.io/docs/v5/intro
-
-#CdW6mWuIVLIsR5KCwu
-#VGGnB4ZjEg7N3GyDUTiK1JHogH7bI41UpHEA
-
 from pybit.unified_trading import HTTP
 
 session = HTTP(testnet=False,
-                api_key="CdW6mWuIVLIsR5KCwu",
-                api_secret="VGGnB4ZjEg7N3GyDUTiK1JHogH7bI41UpHEA",)
+                api_key="H3lloTh3r3Strang3r",
+                api_secret="XcYouWishThereWasAr3alc0de",)
 
 def get_bybit_symbols():
     info = session.get_instruments_info(
