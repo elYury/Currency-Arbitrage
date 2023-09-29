@@ -51,3 +51,5 @@ ban_list = [{'symbol': 'BOXUSDT', 'exchange_buy': 'Gate.io', 'exchange_sell': 'H
 
 # SECTION FOR API KEYS, SECRETS, AND PASSCODES
 #_________________________________________________________________-
+
+# I can't share with you this data ;)
